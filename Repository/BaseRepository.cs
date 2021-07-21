@@ -17,7 +17,7 @@ namespace PadariaTech.Repository
         public BaseRepository(DbContext context)
         {
             _context = context;
-            _dbSet = context.Set<T>();
+            _dbSet = _context.Set<T>();
         }
 
         public void Add(T entity)

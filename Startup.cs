@@ -13,6 +13,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using PadariaTech.Data;
+using PadariaTech.Interfaces;
+using PadariaTech.Models;
+using PadariaTech.Repository;
 
 namespace PadariaTech
 {
@@ -35,6 +38,9 @@ namespace PadariaTech
                 options.UseSqlServer(Configuration.GetConnectionString("SqlServer"));
             });
 
+            //services.AddScoped(typeof(IGenericRepository<>), typeof(BaseRepository<>));
+            services.AddScoped<IBakedProductRepository, BakedProductRepository>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "PadariaTech", Version = "v1" });
@@ -42,13 +48,13 @@ namespace PadariaTech
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DbContext context)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, BakeryContext context)
         {
             if(context.Database.CanConnect())
             {
                 context.Database.Migrate();
             }
-            
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
