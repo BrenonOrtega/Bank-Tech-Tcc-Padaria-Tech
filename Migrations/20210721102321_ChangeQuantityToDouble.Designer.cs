@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PadariaTech.Data;
 
 namespace PadariaTech.Migrations
 {
     [DbContext(typeof(BakeryContext))]
-    partial class BakeryContextModelSnapshot : ModelSnapshot
+    [Migration("20210721102321_ChangeQuantityToDouble")]
+    partial class ChangeQuantityToDouble
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -85,11 +87,17 @@ namespace PadariaTech.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("IdBakedProduct")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("IdBakedProduct")
+                        .IsUnique();
 
                     b.ToTable("Recipes");
                 });
@@ -97,13 +105,6 @@ namespace PadariaTech.Migrations
             modelBuilder.Entity("PadariaTech.Models.BakedProduct", b =>
                 {
                     b.HasBaseType("PadariaTech.Models.Product");
-
-                    b.Property<int>("IdRecipe")
-                        .HasColumnType("int");
-
-                    b.HasIndex("IdRecipe")
-                        .IsUnique()
-                        .HasFilter("[IdRecipe] IS NOT NULL");
 
                     b.HasDiscriminator().HasValue("BakedProduct");
                 });
@@ -119,22 +120,25 @@ namespace PadariaTech.Migrations
                     b.Navigation("Recipe");
                 });
 
-            modelBuilder.Entity("PadariaTech.Models.BakedProduct", b =>
+            modelBuilder.Entity("PadariaTech.Models.Recipe", b =>
                 {
-                    b.HasOne("PadariaTech.Models.Recipe", "Recipe")
-                        .WithOne("BakedProduct")
-                        .HasForeignKey("PadariaTech.Models.BakedProduct", "IdRecipe")
+                    b.HasOne("PadariaTech.Models.BakedProduct", "BakedProduct")
+                        .WithOne("Recipe")
+                        .HasForeignKey("PadariaTech.Models.Recipe", "IdBakedProduct")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Recipe");
+                    b.Navigation("BakedProduct");
                 });
 
             modelBuilder.Entity("PadariaTech.Models.Recipe", b =>
                 {
-                    b.Navigation("BakedProduct");
-
                     b.Navigation("Ingredients");
+                });
+
+            modelBuilder.Entity("PadariaTech.Models.BakedProduct", b =>
+                {
+                    b.Navigation("Recipe");
                 });
 #pragma warning restore 612, 618
         }

@@ -6,11 +6,14 @@ namespace PadariaTech.Models
 {
     public class Recipe : EntityBase
     {
+
+        public double Portion { get; set; }
         public ICollection<Ingredient> Ingredients { get; set; }
-
-        public int IdBakedProduct;
-
-        [ForeignKey(nameof(IdBakedProduct))]
         public BakedProduct BakedProduct { get; set; }
+
+        public string pegarPorcao ()
+        {
+            return $"{ Portion } { BakedProduct.Measure }";
+        }
     }
 }
