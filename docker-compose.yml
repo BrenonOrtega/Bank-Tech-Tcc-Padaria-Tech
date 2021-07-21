@@ -1,0 +1,34 @@
+version: "3.9"
+services: 
+    sql-server: 
+        image: "mcr.microsoft.com/mssql/server:2019-latest"
+        container_name: "tcc-tech-bank-sql-server"
+        ports: 
+            - "1433:1433"
+        working_dir: /opt/mssql-tools/bin
+        deploy:
+            resources:
+                limits:
+                    memory: 2500M
+        environment: 
+            ACCEPT_EULA: Y
+            SA_PASSWORD: Techbank123@
+            MSSQL_DB: dev_db
+            MSSQL_USER: admin
+            MSSQL_PASSWORD: "@dminPassword123"
+        networks: 
+            - sql-server-network
+        #Setup command docker exect -i <container id> /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P Techbank123@ -Q "CREATE LOGIN admin WITH PASSWORD = '@dminPassword123'; CREATE DATABASE dev_db;"
+
+    adminer:
+        image: "adminer"
+        container_name: "tcc-tech-bank-adminer"
+        ports: 
+            - "8080:8080"
+        depends_on: 
+            - "sql-server"
+        networks: 
+            - sql-server-network
+
+networks: 
+    sql-server-network:
