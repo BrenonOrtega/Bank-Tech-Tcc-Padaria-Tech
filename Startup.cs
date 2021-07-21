@@ -5,8 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using PadariaTech.Data;
 using PadariaTech.Extensions;
+using PadariaTech.Data;
 
 namespace PadariaTech
 {

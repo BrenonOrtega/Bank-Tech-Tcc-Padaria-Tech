@@ -13,7 +13,7 @@ namespace PadariaTech.Repository
         private readonly DbContext _context;
 
         private readonly DbSet<T> _dbSet;
-        
+
         public BaseRepository(DbContext context)
         {
             _context = context;
@@ -44,7 +44,7 @@ namespace PadariaTech.Repository
         {
             var result = _dbSet.FirstOrDefault(e => e.Id.Equals(id));
 
-            if(result is not null)
+            if (result is not null)
             {
                 _context.Entry(result).CurrentValues.SetValues(entity);
             }
