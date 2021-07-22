@@ -8,6 +8,5 @@ namespace PadariaTech.Models
         
         [ForeignKey(nameof(IdRecipe))]
         public Recipe Recipe { get; set; }
-
     }
 }

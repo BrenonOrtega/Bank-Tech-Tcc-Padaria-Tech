@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +21,12 @@ namespace PadariaTech.Controllers
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> Get()
         {
-            return Ok(_repository.Get(x => true));
+            var bakedProducts = _repository.Get(x => true).ToList();
+            
+            if(bakedProducts.Any())
+                return Ok(bakedProducts);
+            
+            return NoContent();
         }
 
         [HttpPost]
