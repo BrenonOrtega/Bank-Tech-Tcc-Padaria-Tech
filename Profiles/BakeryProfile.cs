@@ -11,6 +11,9 @@ namespace PadariaTech.Profiles
         {
             CreateMap<Product, ProductCreateDto>();
             CreateMap<ProductReadDto, Product>();
+
+            CreateMap<Recipe, RecipeCreateDto>();
+            CreateMap<RecipeReadDto, RecipeCreateDto>();
         }
     }
 }
