@@ -24,7 +24,7 @@ namespace PadariaTech
         {
 
             services.AddControllers();
-
+    
             var connectionString = Configuration.GetConnectionString("SqlServer");
             services.AddDatabase(connectionString)
                 .AddRepositories()
