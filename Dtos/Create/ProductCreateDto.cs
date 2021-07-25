@@ -1,9 +1,7 @@
 ﻿using System;
-using PadariaTech.Enum;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+using PadariaTech.Enum;
 
 namespace PadariaTech.Dtos.Create
 {
