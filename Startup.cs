@@ -22,13 +22,15 @@ namespace PadariaTech
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
 
             var connectionString = Configuration.GetConnectionString("SqlServer");
+
             services.AddDatabase(connectionString)
+                .AddAutoMapperProfiles()
                 .AddRepositories()
-                .AddServices();
+                .AddServices()
+                ;
 
             services.AddSwaggerGen(c =>
             {
@@ -40,9 +42,7 @@ namespace PadariaTech
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, BakeryContext context)
         {
             if(context.Database.CanConnect())
-            {
                 context.Database.Migrate();
-            }
 
             if (env.IsDevelopment())
             {
