@@ -1,8 +1,10 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 using PadariaTech.Data;
 using PadariaTech.Models;
 using PadariaTech.Repository;
+using PadariaTech.Services;
+using System;
 
 namespace PadariaTech.Extensions
 {
@@ -27,6 +29,15 @@ namespace PadariaTech.Extensions
 
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
+            services.AddScoped<ProductService>();
+            
+            return services;
+        }
+
+        public static IServiceCollection AddAutoMapperProfiles(this IServiceCollection services)
+        {
+            services.AddAutoMapper(assemblies: AppDomain.CurrentDomain.GetAssemblies());
+            
             return services;
         }
     }
