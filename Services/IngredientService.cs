@@ -52,6 +52,13 @@ namespace PadariaTech.Services
             if(ingredient is not null) _ingredientRepository.Delete(ingredient);
         }
 
+        public void Update(int id, IngredientCreateDto ingredientCreateDto)
+        {
+            var ingredient = _mapper.Map<Ingredient>(ingredientCreateDto);
+            
+            if(ingredient is not null) _ingredientRepository.Update(id, ingredient);
+        }
+
         private Ingredient QueryById(int id)
         {
             var ingredient = _ingredientRepository.Get(ingr => ingr.Id.Equals(id)).FirstOrDefault();
