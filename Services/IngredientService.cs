@@ -45,6 +45,13 @@ namespace PadariaTech.Services
             return ingredient.Id;
         }
 
+        public void Delete(int id)
+        {
+            var ingredient = QueryById(id);
+
+            if(ingredient is not null) _ingredientRepository.Delete(ingredient);
+        }
+
         private Ingredient QueryById(int id)
         {
             var ingredient = _ingredientRepository.Get(ingr => ingr.Id.Equals(id)).FirstOrDefault();
