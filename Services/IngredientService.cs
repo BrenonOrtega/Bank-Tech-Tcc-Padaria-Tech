@@ -4,6 +4,7 @@ using System.Linq;
 using PadariaTech.Dtos.Read;
 using PadariaTech.Models;
 using PadariaTech.Dtos.Create;
+using System.Threading.Tasks;
 
 namespace PadariaTech.Services
 {
@@ -64,6 +65,11 @@ namespace PadariaTech.Services
             var ingredient = _ingredientRepository.Get(ingr => ingr.Id.Equals(id)).FirstOrDefault();
 
             return ingredient;
+        }
+
+        public Task<int> CommitChangesAsync()
+        {
+            return  _ingredientRepository.SaveChanges();
         }
     }
 }
