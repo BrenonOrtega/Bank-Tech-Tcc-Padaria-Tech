@@ -49,7 +49,7 @@ namespace PadariaTech.Services
         {
             var product = _mapper.Map<Product>(productDto);
 
-            if (product is null)
+            if (product is not null)
             {
                 _productRepository.Add(product);
             }
