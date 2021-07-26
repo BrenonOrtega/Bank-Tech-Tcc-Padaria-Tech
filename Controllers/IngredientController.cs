@@ -21,13 +21,25 @@ namespace PadariaTech.Controllers
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
-        public IActionResult Get()
+        public IActionResult GetAll()
         {
             var ingredients = _ingredientService.GetAll();
 
             if (ingredients.Any()) return Ok(ingredients);
 
             return NoContent();
+        }
+        [HttpGet]
+        [Route("/{id}")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public IActionResult Get(int id)
+        {
+            var ingredient = _ingredientService.GetById(id);
+
+            if(ingredient is not null) return Ok(ingredient);
+
+            return NotFound();
         }
 
         [HttpPost]
@@ -41,7 +53,7 @@ namespace PadariaTech.Controllers
             return CreatedAtAction(nameof(Post), new { id }, new { id, ingredientDto.Name, ingredientDto.Measurement, ingredientDto.Quantity });
         }
 
-        [HttpDelete]
+        [HttpDelete("/{id}")]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<IActionResult> Delete(int id)
@@ -55,5 +67,9 @@ namespace PadariaTech.Controllers
 
             return Ok();
         }
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+
     }
 }
