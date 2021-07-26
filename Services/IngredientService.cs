@@ -3,6 +3,7 @@ using AutoMapper;
 using System.Linq;
 using PadariaTech.Dtos.Read;
 using PadariaTech.Models;
+using PadariaTech.Dtos.Create;
 
 namespace PadariaTech.Services
 {
@@ -33,6 +34,15 @@ namespace PadariaTech.Services
             if(ingredient is null) return new IngredientReadDto();
 
             return _mapper.Map<IngredientReadDto>(ingredient);
+        }
+
+        public int Register(IngredientCreateDto ingredientCreateDto)
+        {
+            var ingredient = _mapper.Map<Ingredient>(ingredientCreateDto);
+
+            if(ingredient is not null) _ingredientRepository.Add(ingredient);
+
+            return ingredient.Id;
         }
 
         private Ingredient QueryById(int id)
