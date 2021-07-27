@@ -17,7 +17,6 @@ namespace PadariaTech.Models.Base
         public virtual int Id { get; set; }
 
         [MaxLength(150)]
-
         public string Name { get ; set; }
     }
 }

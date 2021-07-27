@@ -16,11 +16,11 @@ namespace PadariaTech.Models
         [MaxLength(30)]
         public string Measure { get; set; }
 
-
         [EnumDataType(typeof(ProductTypes))]
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public ProductTypes Type { get; set; }
 
+        public Ingredient Ingredient { get; set; }
 
         public void AddQuantity(double quantity)
         {
