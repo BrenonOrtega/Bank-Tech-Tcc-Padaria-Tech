@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace PadariaTech.Controllers
 {
     [ApiController]
-    [Route("[Controller]")]
+    [Route("api/[Controller]")]
     class IngredientController : ControllerBase
     {
         private readonly IngredientService _ingredientService;
@@ -29,8 +29,7 @@ namespace PadariaTech.Controllers
 
             return NoContent();
         }
-        [HttpGet]
-        [Route("/{id}")]
+        [HttpGet("/{id}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public IActionResult Get(int id)
@@ -53,8 +52,7 @@ namespace PadariaTech.Controllers
             return CreatedAtAction(nameof(Post), new { id }, new { id, ingredientDto.Name, ingredientDto.Measurement, ingredientDto.Quantity });
         }
 
-        [HttpDelete]
-        [Route("/{id}")]
+        [HttpDelete("/{id}")]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> Delete(int id)
@@ -68,8 +66,7 @@ namespace PadariaTech.Controllers
 
             return NoContent();
         }
-        [HttpPut]
-        [Route("{/id}")]
+        [HttpPut("/{id}")]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<IActionResult> Update(int id, [FromBody] IngredientCreateDto ingredientDto)
