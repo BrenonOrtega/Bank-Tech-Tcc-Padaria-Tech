@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using PadariaTech.Extensions;
 using PadariaTech.Data;
+using AutoMapper;
 
 namespace PadariaTech
 {
@@ -22,9 +23,11 @@ namespace PadariaTech
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            
             services.AddControllers();
-    
+
+            services.AddAutoMapper(typeof(Startup));
+            
             var connectionString = Configuration.GetConnectionString("SqlServer");
             services.AddDatabase(connectionString)
                 .AddRepositories()
@@ -50,7 +53,7 @@ namespace PadariaTech
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PadariaTech v1"));
             }
-    
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
