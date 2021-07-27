@@ -18,8 +18,6 @@ namespace PadariaTech.Models
         public Product Product { get; set;}
 
         public int RecipeId;
-
-        [ForeignKey(nameof(RecipeId))]
         public Recipe Recipe{ get; set; }
     }
 }

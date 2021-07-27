@@ -1,65 +1,41 @@
-using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using System.Linq;
 using System.Net;
-using PadariaTech.Services;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using PadariaTech.Dtos.Create;
+using PadariaTech.Services;
 
 namespace PadariaTech.Controllers
 {
     [ApiController]
     [Route("[Controller]")]
-    public class ProductController : ControllerBase
+    public class BakedProductController : ControllerBase
     {
-        private readonly ProductService _service;
+        private readonly BakedProductService _service;
 
-        public ProductController(ProductService service)
+        public BakedProductController(BakedProductService service)
         {
             _service = service;
         }
-
+        
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.NoContent)]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            var bakedProducts = _service.GetAll();
+            var mappedBakedProducts = _service.GetAll();
 
-            if (bakedProducts.Any())
-            {
-                return Ok(bakedProducts);
-            }
-
-            return NoContent();
+            return Ok(mappedBakedProducts);
         }
 
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.Created)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Post([FromBody] ProductCreateDto dto)
+        public async Task<IActionResult> Post([FromBody]BakedProductCreateDto dto)
         {
-            var id = _service.Register(dto);
+            _service.Register(dto);
             await _service.CommitChangesAsync();
 
-            return CreatedAtAction(nameof(Post), new { id }, new { id, dto.Name, dto.Price, dto.ProductType });
+            return CreatedAtAction(nameof(Post),  dto);
         }
 
-        [HttpPut("/delete/{id}")]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        [ProducesResponseType((int)HttpStatusCode.NoContent)]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var product = _service.GetById(id);
 
-            if (product is null)
-            {
-                return NotFound(product);
-            }
-
-            _service.Delete(id);
-            await _service.CommitChangesAsync();
-
-            return NoContent();
-        }
     }
 }

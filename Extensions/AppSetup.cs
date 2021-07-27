@@ -29,8 +29,10 @@ namespace PadariaTech.Extensions
 
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
-            services.AddScoped<ProductService>();
             
+
+            services.AddTransient<ProductService>();
+            services.AddTransient<BakedProductService>();
             return services;
         }
 

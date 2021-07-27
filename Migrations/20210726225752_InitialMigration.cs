@@ -13,8 +13,9 @@ namespace PadariaTech.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Price = table.Column<decimal>(type: "decimal(5,2)", nullable: false),
-                    StockQuantity = table.Column<int>(type: "int", nullable: false),
+                    StockQuantity = table.Column<double>(type: "float", nullable: false),
                     Measure = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
+                    Type = table.Column<int>(type: "int", nullable: false),
                     Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true)
                 },
@@ -29,15 +30,16 @@ namespace PadariaTech.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IdBakedProduct = table.Column<int>(type: "int", nullable: false),
+                    Portion = table.Column<double>(type: "float", nullable: false),
+                    BakedProductId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Recipes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Recipes_Products_IdBakedProduct",
-                        column: x => x.IdBakedProduct,
+                        name: "FK_Recipes_Products_BakedProductId",
+                        column: x => x.BakedProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -51,29 +53,42 @@ namespace PadariaTech.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Quantity = table.Column<double>(type: "float", nullable: false),
                     Measurement = table.Column<string>(type: "nvarchar(35)", maxLength: 35, nullable: true),
-                    RecipeId = table.Column<int>(type: "int", nullable: false),
+                    IdProduct = table.Column<int>(type: "int", nullable: false),
+                    RecipeId1 = table.Column<int>(type: "int", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Ingredients", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Ingredients_Recipes_RecipeId",
-                        column: x => x.RecipeId,
-                        principalTable: "Recipes",
+                        name: "FK_Ingredients_Products_IdProduct",
+                        column: x => x.IdProduct,
+                        principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Ingredients_Recipes_RecipeId1",
+                        column: x => x.RecipeId1,
+                        principalTable: "Recipes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ingredients_RecipeId",
+                name: "IX_Ingredients_IdProduct",
                 table: "Ingredients",
-                column: "RecipeId");
+                column: "IdProduct",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Recipes_IdBakedProduct",
+                name: "IX_Ingredients_RecipeId1",
+                table: "Ingredients",
+                column: "RecipeId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Recipes_BakedProductId",
                 table: "Recipes",
-                column: "IdBakedProduct",
+                column: "BakedProductId",
                 unique: true);
         }
 
