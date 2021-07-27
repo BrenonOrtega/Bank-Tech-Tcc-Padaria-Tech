@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using PadariaTech.Data;
 using PadariaTech.Models;
 using PadariaTech.Repository;
+using PadariaTech.Services;
 
 namespace PadariaTech.Extensions
 {
@@ -27,6 +28,7 @@ namespace PadariaTech.Extensions
 
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
+            services.AddScoped<RecipeService>();
             return services;
         }
     }
