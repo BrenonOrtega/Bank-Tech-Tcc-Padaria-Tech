@@ -74,7 +74,7 @@ namespace PadariaTech.Services
             }
         }
 
-        private T QueryById(int id)
+        protected T QueryById(int id)
         {
             var model = _repository.Get(prod => prod.Id.Equals(id)).FirstOrDefault();
 
