@@ -9,11 +9,11 @@ namespace PadariaTech.Controllers
 {
     [ApiController]
     [Route("api/[Controller]")]
-    class IngredientController : ControllerBase
+    class IngredientsController : ControllerBase
     {
         private readonly IngredientService _ingredientService;
 
-        public IngredientController(IngredientService ingredientService)
+        public IngredientsController(IngredientService ingredientService)
         {
             _ingredientService = ingredientService;
         }
