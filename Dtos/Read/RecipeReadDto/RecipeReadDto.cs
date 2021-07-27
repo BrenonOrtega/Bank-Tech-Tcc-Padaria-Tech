@@ -4,6 +4,8 @@ namespace PadariaTech.Dtos.Read
 {
     public class RecipeReadDto
     {
+        public int Id { get; set; }
+        
         public string Name { get; set; }
 
         public double Portion { get; set; }

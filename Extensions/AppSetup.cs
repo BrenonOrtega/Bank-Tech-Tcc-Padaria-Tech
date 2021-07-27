@@ -29,17 +29,17 @@ namespace PadariaTech.Extensions
 
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
-            
-
+            services.AddScoped<RecipeService>();
             services.AddTransient<ProductService>();
             services.AddTransient<BakedProductService>();
+            
             return services;
         }
 
         public static IServiceCollection AddAutoMapperProfiles(this IServiceCollection services)
         {
             services.AddAutoMapper(assemblies: AppDomain.CurrentDomain.GetAssemblies());
-            
+
             return services;
         }
     }

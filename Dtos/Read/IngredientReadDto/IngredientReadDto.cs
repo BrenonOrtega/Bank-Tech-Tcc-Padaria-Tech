@@ -1,5 +1,3 @@
-using PadariaTech.Models;
-
 namespace PadariaTech.Dtos.Read
 {
     public class IngredientReadDto

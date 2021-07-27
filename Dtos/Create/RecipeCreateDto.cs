@@ -6,7 +6,7 @@ namespace PadariaTech.Dtos.Create
     {
         [Required]
         public string Name { get; set; }
-
+        
         [Required]
         public double Portion { get; set; }
     }

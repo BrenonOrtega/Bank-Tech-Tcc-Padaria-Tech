@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using PadariaTech.Extensions;
 using PadariaTech.Data;
+using AutoMapper;
 
 namespace PadariaTech
 {
@@ -23,7 +24,7 @@ namespace PadariaTech
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-
+            
             var connectionString = Configuration.GetConnectionString("SqlServer");
 
             services.AddDatabase(connectionString)
@@ -50,7 +51,7 @@ namespace PadariaTech
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PadariaTech v1"));
             }
-    
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
