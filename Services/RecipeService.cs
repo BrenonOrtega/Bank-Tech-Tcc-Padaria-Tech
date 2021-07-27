@@ -1,5 +1,6 @@
-using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using PadariaTech.Dtos.Create;
 using PadariaTech.Dtos.Read;
@@ -23,7 +24,7 @@ namespace PadariaTech.Services
         {
             var recipe = _mapper.Map<Recipe>(recipeDto);
 
-            if(recipe is null)
+            if (recipe is not null)
                 _recipeRepository.Add(recipe);
         }
 
@@ -31,15 +32,25 @@ namespace PadariaTech.Services
         {
             var recipe = QueryById(recipeDto.Id);
 
-            if(recipe is not null)
+            if (recipe is not null)
                 _recipeRepository.Delete(recipe);
+        }
+
+        public IEnumerable<RecipeReadDto> GetAll()
+        {
+            var recipes = _recipeRepository
+                .Get(x => true)
+                .Select(x => _mapper.Map<RecipeReadDto>(x))
+                .ToList();
+
+            return recipes;
         }
 
         public RecipeReadDto GetById(int id)
         {
-             var recipe = QueryById(id);
+            var recipe = QueryById(id);
 
-            if(recipe is null)
+            if (recipe is null)
                 return new RecipeReadDto();
 
             var mappedRecipe = _mapper.Map<RecipeReadDto>(recipe);
@@ -49,10 +60,13 @@ namespace PadariaTech.Services
         private Recipe QueryById(int id)
         {
             var recipe = _recipeRepository.Get(prod => prod.Id.Equals(id)).FirstOrDefault();
-            
+
             return recipe;
         }
-        
+        public Task<int> CommitChangesAsync()
+        {
+            return _recipeRepository.SaveChanges();
+        }
 
     }
 }
