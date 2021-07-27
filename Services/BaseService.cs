@@ -18,67 +18,67 @@ namespace PadariaTech.Services
             _mapper = mapper;
         }
 
-                public IEnumerable<TRead> GetAll()
+        public IEnumerable<TRead> GetAll()
         {
-            var products = _repository
+            var model = _repository
                 .Get(x => true)
                 .Select(x => _mapper.Map<TRead>(x))
                 .ToList();
 
-            return products;
+            return model;
         }
 
         public TRead GetById(int id)
         {
-            var product = QueryById(id);
+            var model = QueryById(id);
 
-            if (product is null)
+            if (model is null)
             {
                 return new TRead();
             }
 
-            var mappedProduct = _mapper.Map<TRead>(product);
-            return mappedProduct;
+            var mappedModel = _mapper.Map<TRead>(model);
+            return mappedModel;
         }
 
-        ///<Returns>Registered product id</Returns>
-        public int Register(TCreate productDto)
+        ///<Returns>Registered model id</Returns>
+        public int Register(TCreate modelDto)
         {
-            var product = _mapper.Map<T>(productDto);
+            var model = _mapper.Map<T>(modelDto);
 
-            if (product is not null)
+            if (model is not null)
             {
-                _repository.Add(product);
+                _repository.Add(model);
             }
 
-            return product.Id;
+            return model.Id;
         }
 
         public void Delete(int id)
         {
-            var product = QueryById(id);
+            var model = QueryById(id);
 
-            if (product is not null)
+            if (model is not null)
             {
-                _repository.Delete(product);
+                _repository.Delete(model);
             }
         }
 
         private void Update(int id, TCreate dto)
         {
-            var product = _mapper.Map<T>(dto);
+            var model = _mapper.Map<T>(dto);
 
-            if (product is not null)
+            if (model is not null)
             {
-                _repository.Update(id, product);
+                _repository.Update(id, model);
             }
         }
 
         private T QueryById(int id)
         {
-            var product = _repository.Get(prod => prod.Id.Equals(id)).FirstOrDefault();
+            var model = _repository.Get(prod => prod.Id.Equals(id)).FirstOrDefault();
 
-            return product;
+            return model;
         }
 
         public Task<int> CommitChangesAsync()

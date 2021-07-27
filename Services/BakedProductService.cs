@@ -12,7 +12,5 @@ namespace PadariaTech.Services
             : base(repository, mapper)
         {
         }
-
-        
     }
 }

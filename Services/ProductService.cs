@@ -11,7 +11,8 @@ namespace PadariaTech.Services
 
         private IMapper _mapper;
 
-        public ProductService(IProductRepository productRepository, IMapper mapper) : base(productRepository, mapper)
+        public ProductService(IProductRepository productRepository, IMapper mapper) 
+            : base(productRepository, mapper)
         {
             _productRepository = productRepository;
             _mapper = mapper;
