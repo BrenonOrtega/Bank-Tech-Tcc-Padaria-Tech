@@ -64,7 +64,7 @@ namespace PadariaTech.Services
             }
         }
 
-        private void Update(int id, TCreate dto)
+        public void Update(int id, TCreate dto)
         {
             var model = _mapper.Map<T>(dto);
 
