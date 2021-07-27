@@ -1,5 +1,6 @@
 using PadariaTech.Enum;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace PadariaTech.Dtos.Read
 {
@@ -14,6 +15,8 @@ namespace PadariaTech.Dtos.Read
         public int StockQuantity { get; set; }
      
         public string Measure { get; set;}
+
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public ProductTypes ProductType { get; set; }
     }
 

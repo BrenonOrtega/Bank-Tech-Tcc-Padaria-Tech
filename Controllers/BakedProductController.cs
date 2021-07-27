@@ -1,8 +1,8 @@
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using PadariaTech.Models;
+using PadariaTech.Dtos.Create;
+using PadariaTech.Services;
 
 namespace PadariaTech.Controllers
 {
@@ -10,33 +10,32 @@ namespace PadariaTech.Controllers
     [Route("[Controller]")]
     public class BakedProductController : ControllerBase
     {
-        private readonly IBakedProductRepository _repository;
-        public BakedProductController(IBakedProductRepository repository)
-        {
-            _repository = repository;
-        }
+        private readonly BakedProductService _service;
 
+        public BakedProductController(BakedProductService service)
+        {
+            _service = service;
+        }
+        
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> Get()
         {
-            var bakedProducts = _repository.Get(x => true).ToList();
-            
-            if(bakedProducts.Any())
-                return Ok(bakedProducts);
-            
-            return NoContent();
+            var mappedBakedProducts = _service.GetAll();
+
+            return Ok(mappedBakedProducts);
         }
 
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.Created)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Post([FromBody]BakedProduct bakedProduct)
+        public async Task<IActionResult> Post([FromBody]BakedProductCreateDto dto)
         {
-            _repository.Add(bakedProduct);
-            await _repository.SaveChanges();
-            return CreatedAtAction(nameof(Post), new { bakedProduct.Id }, bakedProduct);
+            _service.Register(dto);
+            await _service.CommitChangesAsync();
+
+            return CreatedAtAction(nameof(Post),  dto);
         }
+
+
     }
 }
