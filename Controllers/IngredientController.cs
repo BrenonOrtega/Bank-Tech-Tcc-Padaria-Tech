@@ -53,9 +53,10 @@ namespace PadariaTech.Controllers
             return CreatedAtAction(nameof(Post), new { id }, new { id, ingredientDto.Name, ingredientDto.Measurement, ingredientDto.Quantity });
         }
 
-        [HttpDelete("/{id}")]
+        [HttpDelete]
+        [Route("/{id}")]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> Delete(int id)
         {
             var ingredient = _ingredientService.GetById(id);
@@ -65,11 +66,22 @@ namespace PadariaTech.Controllers
             _ingredientService.Delete(id);
             await _ingredientService.CommitChangesAsync();
 
-            return Ok();
+            return NoContent();
         }
-        [HttpPost]
+        [HttpPut]
+        [Route("{/id}")]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<IActionResult> Update(int id, [FromBody] IngredientCreateDto ingredientDto)
+        {
+            var ingredient = _ingredientService.GetById(id);
 
+            if(ingredient is null) return NotFound();
+
+            _ingredientService.Update(id, ingredientDto);
+            await _ingredientService.CommitChangesAsync();
+
+            return Ok();
+        }
     }
 }
