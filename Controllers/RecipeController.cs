@@ -13,12 +13,11 @@ namespace TccPadariaTech.Controllers
 
     public class RecipeController : ControllerBase
     {
-        private readonly IRecipeRepository _repository;
         private readonly RecipeService _service;
 
-        public RecipeController(IRecipeRepository repository)
+        public RecipeController(RecipeService service)
         {
-            _repository = repository;
+            _service = service;
         }
 
         [HttpGet]
@@ -26,7 +25,7 @@ namespace TccPadariaTech.Controllers
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
          public async Task<IActionResult> Get()
         {
-            var recipes = _repository.Get(x => true).ToList();
+            var recipes = _service.GetAll();
             
             if(recipes.Any())
                 return Ok(recipes);
@@ -40,8 +39,7 @@ namespace TccPadariaTech.Controllers
         public async Task<IActionResult> Post([FromBody]RecipeCreateDto recipe)
         {
             _service.Register(recipe);
-            //_repository.Add(recipe);
-            await _repository.SaveChanges();
+            await _service.CommitChangesAsync();
             return CreatedAtAction(nameof(Post), new { recipe.Name }, recipe);
         }
     }
