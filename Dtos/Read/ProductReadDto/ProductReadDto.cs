@@ -13,6 +13,7 @@ namespace PadariaTech.Dtos.Read
 
         public int StockQuantity { get; set; }
      
+        public string Measure { get; set;}
         public ProductTypes ProductType { get; set; }
     }
 
