@@ -1,9 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using PadariaTech.Data;
-using PadariaTech.Models;
-using PadariaTech.Repository;
-using PadariaTech.Services;
+using PadariaTech.Domain.Models;
+using PadariaTech.Data.Repository;
+using PadariaTech.Application.Services;
 using System;
 
 namespace PadariaTech.Extensions
