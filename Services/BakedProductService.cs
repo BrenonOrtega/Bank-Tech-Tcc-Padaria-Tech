@@ -13,13 +13,23 @@ namespace PadariaTech.Services
         {
         }
 
-        public int Register(BakedProductCreateDto model)
+        public override int Register(BakedProductCreateDto dto)
         {
+            //Example
+            //Manipulate dto, make validations, map to model, add relationship.
+            //Code here.
+
+            //base.Register(model: newModel);
             throw new System.NotImplementedException();
         }
 
-        public bool Update(BakedProductCreateDto model)
+        public override bool Update(int id, BakedProductCreateDto dto)
         {
+            //Example
+            //Manipulate dto, make validations, map to model, add relationship.
+            //Code here.
+
+            //base.Update(id: id, model: updatedModel);
             throw new System.NotImplementedException();
         }
     }
