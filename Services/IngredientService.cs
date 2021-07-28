@@ -17,12 +17,12 @@ namespace PadariaTech.Services
         {
         }
 
-        public int Register(IngredientCreateDto dto)
+        public override int Register(IngredientCreateDto dto)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
-        public bool Update(IngredientCreateDto dto)
+        public override bool Update(int id, IngredientCreateDto dto)
         {
             throw new NotImplementedException();
         }

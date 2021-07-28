@@ -11,8 +11,8 @@ namespace PadariaTech.Services
         where T : EntityBase 
         where TRead : new()
     {
-        private readonly IGenericRepository<T> _repository;
-        private readonly IMapper _mapper;
+        protected readonly IGenericRepository<T> _repository; 
+        protected readonly IMapper _mapper;
 
         public BaseService(IGenericRepository<T> repository, IMapper mapper)
         {
@@ -20,7 +20,9 @@ namespace PadariaTech.Services
             _mapper = mapper;
         }
 
-        ///<Returns>Registered model id</Returns>
+        public abstract int Register(TCreate dto);
+        public abstract bool Update(int id, TCreate dto);
+
         protected virtual int Register(T model)
         {
             if (model is not null)

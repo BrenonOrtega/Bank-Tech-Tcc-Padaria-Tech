@@ -10,22 +10,16 @@ namespace PadariaTech.Services
 {
     public class RecipeService : BaseService<Recipe, RecipeReadDto, RecipeCreateDto>
     {
-        private readonly IRecipeRepository _recipeRepository;
-
-        private IMapper _mapper;
-
         public RecipeService(IRecipeRepository recipeRepository, IMapper mapper) : base(recipeRepository, mapper)
         {
-            _recipeRepository = recipeRepository;
-            _mapper = mapper;
         }
 
-        public int Register(RecipeCreateDto modelDto)
+        public override int Register(RecipeCreateDto dto)
         {
             throw new System.NotImplementedException();
         }
 
-        public bool Update(RecipeCreateDto modelDto)
+        public override bool Update(int id, RecipeCreateDto dto)
         {
             throw new System.NotImplementedException();
         }

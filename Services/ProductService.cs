@@ -7,23 +7,17 @@ namespace PadariaTech.Services
 {
     public class ProductService : BaseService<Product, ProductReadDto, ProductCreateDto>
     {
-        private readonly IProductRepository _productRepository;
-
-        private IMapper _mapper;
-
         public ProductService(IProductRepository productRepository, IMapper mapper) 
             : base(productRepository, mapper)
         {
-            _productRepository = productRepository;
-            _mapper = mapper;
         }
 
-        public int Register(ProductCreateDto modelDto)
+        public override int Register(ProductCreateDto dto)
         {
             throw new System.NotImplementedException();
         }
-        
-        public bool Update(ProductCreateDto modelDto)
+
+        public override bool Update(int id, ProductCreateDto dto)
         {
             throw new System.NotImplementedException();
         }
