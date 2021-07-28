@@ -20,8 +20,8 @@ namespace PadariaTech.Application.Services
             _mapper = mapper;
         }
 
-        public abstract int Register(TCreate dto);
-        public abstract bool Update(int id, TCreate dto);
+        public abstract Task<int> Register(TCreate dto);
+        public abstract Task<bool> Update(int id, TCreate dto);
 
         protected virtual int Register(T model)
         {

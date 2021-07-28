@@ -2,6 +2,7 @@ using AutoMapper;
 using PadariaTech.Domain.Models;
 using PadariaTech.Application.Dtos.Create;
 using PadariaTech.Application.Dtos.Read;
+using System.Threading.Tasks;
 
 namespace PadariaTech.Application.Services
 {
@@ -13,7 +14,7 @@ namespace PadariaTech.Application.Services
         {
         }
 
-        public override int Register(BakedProductCreateDto dto)
+        public override async Task<int> Register(BakedProductCreateDto dto)
         {
             //Example
             //Manipulate dto, make validations, map to model, add relationship.
@@ -23,7 +24,7 @@ namespace PadariaTech.Application.Services
             throw new System.NotImplementedException();
         }
 
-        public override bool Update(int id, BakedProductCreateDto dto)
+        public override Task<bool> Update(int id, BakedProductCreateDto dto)
         {
             //Example
             //Manipulate dto, make validations, map to model, add relationship.

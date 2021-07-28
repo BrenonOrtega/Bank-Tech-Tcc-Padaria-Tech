@@ -2,6 +2,7 @@ using AutoMapper;
 using PadariaTech.Application.Dtos.Read;
 using PadariaTech.Application.Dtos.Create;
 using PadariaTech.Domain.Models;
+using System.Threading.Tasks;
 
 namespace PadariaTech.Application.Services
 {
@@ -12,12 +13,12 @@ namespace PadariaTech.Application.Services
         {
         }
 
-        public override int Register(ProductCreateDto dto)
+        public override Task<int> Register(ProductCreateDto dto)
         {
             throw new System.NotImplementedException();
         }
 
-        public override bool Update(int id, ProductCreateDto dto)
+        public override Task<bool> Update(int id, ProductCreateDto dto)
         {
             throw new System.NotImplementedException();
         }
