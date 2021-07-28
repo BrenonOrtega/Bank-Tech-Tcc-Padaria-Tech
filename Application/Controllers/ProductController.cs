@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using PadariaTech.Application.Services;
 using PadariaTech.Application.Dtos.Create;
 
-namespace PadariaTech.Controllers
+namespace PadariaTech.Application.Controllers
 {
     [ApiController]
     [Route("[Controller]")]

@@ -6,18 +6,20 @@ using PadariaTech.Application.Dtos.Create;
 using PadariaTech.Domain.Models;
 using PadariaTech.Application.Services;
 
-namespace TccPadariaTech.Application.Controllers
+namespace PadariaTech.Application.Controllers
 {
     [ApiController]
     [Route("[Controller]")]
 
-    public class RecipeController : ControllerBase
+    public partial class RecipeController : ControllerBase
     {
-        private readonly RecipeService _service;
+        private readonly RecipeService _recipeService;        
+        private readonly IngredientService _ingredientService;
 
-        public RecipeController(RecipeService service)
+        public RecipeController(RecipeService recipeService, IngredientService ingredientService)
         {
-            _service = service;
+            _recipeService = recipeService;
+            _ingredientService = ingredientService;
         }
 
         [HttpGet]
@@ -25,7 +27,7 @@ namespace TccPadariaTech.Application.Controllers
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
          public async Task<IActionResult> Get()
         {
-            var recipes = _service.GetAll();
+            var recipes = _recipeService.GetAll();
             
             if(recipes.Any())
                 return Ok(recipes);
@@ -38,8 +40,7 @@ namespace TccPadariaTech.Application.Controllers
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> Post([FromBody]RecipeCreateDto recipe)
         {
-            _service.Register(recipe);
-            await _service.CommitChangesAsync();
+            var id = await _recipeService.Register(recipe);
             return CreatedAtAction(nameof(Post), new { recipe.Name }, recipe);
         }
     }
