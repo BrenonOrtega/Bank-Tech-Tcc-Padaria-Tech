@@ -19,7 +19,7 @@ namespace PadariaTech.Domain.Models
 
         public ProductTypes Type { get; set; }
 
-
+        public Ingredient Ingredient { get; set; }
 
         public void AddQuantity(double quantity)
         {
