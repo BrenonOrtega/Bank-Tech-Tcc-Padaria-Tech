@@ -10,9 +10,6 @@ namespace PadariaTech.Domain.Models
 
         public ICollection<Ingredient> Ingredients { get; set; }
 
-        public int BakedProductId { get; set; }
-
-        [ForeignKey(nameof(BakedProductId))]
         public BakedProduct BakedProduct { get; set; }
 
         public Recipe()
