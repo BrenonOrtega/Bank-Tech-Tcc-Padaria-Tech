@@ -1,7 +1,7 @@
 using AutoMapper;
-using PadariaTech.Dtos.Create;
-using PadariaTech.Dtos.Read;
-using PadariaTech.Models;
+using PadariaTech.Application.Dtos.Create;
+using PadariaTech.Application.Dtos.Read;
+using PadariaTech.Domain.Models;
 
 namespace PadariaTech.Profiles
 {

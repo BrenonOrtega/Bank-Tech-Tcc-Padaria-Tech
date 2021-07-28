@@ -1,8 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using PadariaTech.Data;
-using PadariaTech.Models;
-using PadariaTech.Repository;
+using PadariaTech.Domain.Models;
+using PadariaTech.Data.Repository;
 using PadariaTech.Services;
 using System;
 

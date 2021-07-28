@@ -1,7 +1,7 @@
 using AutoMapper;
-using PadariaTech.Models;
-using PadariaTech.Dtos.Create;
-using PadariaTech.Dtos.Read;
+using PadariaTech.Domain.Models;
+using PadariaTech.Application.Dtos.Create;
+using PadariaTech.Application.Dtos.Read;
 
 namespace PadariaTech.Profiles
 {
@@ -17,8 +17,6 @@ namespace PadariaTech.Profiles
             CreateMap<Ingredient, IngredientReadDto>()
                 .ForMember(readDto => readDto.Recipe, opt => opt.MapFrom(model => model.Recipe))
                 .ForMember(readDto => readDto.Product, opt => opt.MapFrom(model => model.Product));
-
-
         }        
     }
 }
