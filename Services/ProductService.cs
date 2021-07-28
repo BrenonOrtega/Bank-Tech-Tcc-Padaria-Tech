@@ -1,7 +1,7 @@
 using AutoMapper;
-using PadariaTech.Dtos.Create;
-using PadariaTech.Dtos.Read;
-using PadariaTech.Models;
+using PadariaTech.Application.Dtos.Read;
+using PadariaTech.Application.Dtos.Create;
+using PadariaTech.Domain.Models;
 
 namespace PadariaTech.Services
 {
@@ -16,6 +16,16 @@ namespace PadariaTech.Services
         {
             _productRepository = productRepository;
             _mapper = mapper;
+        }
+
+        public int Register(ProductCreateDto modelDto)
+        {
+            throw new System.NotImplementedException();
+        }
+        
+        public bool Update(ProductCreateDto modelDto)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
