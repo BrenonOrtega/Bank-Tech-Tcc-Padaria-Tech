@@ -1,7 +1,7 @@
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using PadariaTech.Dtos.Create;
+using PadariaTech.Application.Dtos.Create;
 using PadariaTech.Services;
 
 namespace PadariaTech.Controllers

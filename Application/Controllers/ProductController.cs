@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Net;
 using PadariaTech.Services;
-using PadariaTech.Dtos.Create;
+using PadariaTech.Application.Dtos.Create;
 
 namespace PadariaTech.Controllers
 {

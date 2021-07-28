@@ -1,9 +1,9 @@
-using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using System.Linq;
 using System.Net;
+using System.Linq;
+using System.Threading.Tasks;
+using PadariaTech.Application.Dtos.Create;
 using PadariaTech.Services;
-using PadariaTech.Dtos.Create;
+using Microsoft.AspNetCore.Mvc;
 
 namespace PadariaTech.Controllers
 {
@@ -70,7 +70,7 @@ namespace PadariaTech.Controllers
                 return BadRequest(ingredient);
             }
 
-            _service.Update(ingredient.Id, dto);
+            _service.Update(id, dto);
             await _service.CommitChangesAsync();
 
             return Ok(ingredient);
