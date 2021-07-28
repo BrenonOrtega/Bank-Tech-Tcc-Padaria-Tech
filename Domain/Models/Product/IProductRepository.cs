@@ -1,6 +1,6 @@
-using PadariaTech.Interfaces;
+using PadariaTech.Domain.Interfaces;
 
-namespace PadariaTech.Models
+namespace PadariaTech.Domain.Models
 {
     public interface IProductRepository : IGenericRepository<Product>
     {

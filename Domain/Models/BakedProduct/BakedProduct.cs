@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace PadariaTech.Models
+namespace PadariaTech.Domain.Models
 {
     public class BakedProduct : Product
     {

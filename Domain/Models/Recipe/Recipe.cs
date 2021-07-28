@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using PadariaTech.Models.Base;
+using PadariaTech.Domain.Models;
 
-namespace PadariaTech.Models
+namespace PadariaTech.Domain.Models
 {
     public class Recipe : EntityBase
     {

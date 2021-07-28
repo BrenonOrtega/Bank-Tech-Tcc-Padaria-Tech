@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace PadariaTech.Models.Base
+namespace PadariaTech.Domain.Models
 {
     public interface IEntityBase<TKey>
     {
