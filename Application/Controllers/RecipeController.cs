@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PadariaTech.Application.Dtos.Create;
 using PadariaTech.Domain.Models;
-using PadariaTech.Services;
+using PadariaTech.Application.Services;
 
 namespace TccPadariaTech.Application.Controllers
 {

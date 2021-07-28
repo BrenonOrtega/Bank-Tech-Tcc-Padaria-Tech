@@ -6,7 +6,7 @@ using PadariaTech.Application.Dtos.Read;
 using PadariaTech.Application.Dtos.Create;
 using PadariaTech.Domain.Models;
 
-namespace PadariaTech.Services
+namespace PadariaTech.Application.Services
 {
     public class RecipeService : BaseService<Recipe, RecipeReadDto, RecipeCreateDto>
     {

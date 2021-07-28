@@ -3,7 +3,7 @@ using PadariaTech.Domain.Models;
 using PadariaTech.Application.Dtos.Create;
 using PadariaTech.Application.Dtos.Read;
 
-namespace PadariaTech.Services
+namespace PadariaTech.Application.Services
 {
     public class BakedProductService 
         : BaseService<BakedProduct, BakedProductReadDto, BakedProductCreateDto>

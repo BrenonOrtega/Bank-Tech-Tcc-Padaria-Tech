@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using PadariaTech.Domain.Interfaces;
 using PadariaTech.Domain.Models;
 
-namespace PadariaTech.Services
+namespace PadariaTech.Application.Services
 {
     public abstract class BaseService<T, TRead, TCreate> 
         where T : EntityBase 

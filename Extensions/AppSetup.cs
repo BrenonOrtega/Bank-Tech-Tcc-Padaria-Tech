@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PadariaTech.Data;
 using PadariaTech.Domain.Models;
 using PadariaTech.Data.Repository;
-using PadariaTech.Services;
+using PadariaTech.Application.Services;
 using System;
 
 namespace PadariaTech.Extensions
