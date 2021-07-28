@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PadariaTech.Services
 {
-    class IngredientService 
+    public class IngredientService 
     : BaseService<Ingredient, IngredientReadDto, IngredientCreateDto>
     {
 

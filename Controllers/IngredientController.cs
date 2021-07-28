@@ -1,42 +1,97 @@
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using PadariaTech.Models;
+using PadariaTech.Services;
+using PadariaTech.Dtos.Create;
 
-namespace TccPadariaTech.Controllers
+namespace PadariaTech.Controllers
 {
     [ApiController]
-    [Route("[Controller]")]
+    [Route("/api/[controller]")]
     public class IngredientController : ControllerBase
     {
-        private readonly IIngredientRepository _repository;
-        public IngredientController(IIngredientRepository repository)
+        private readonly IngredientService _service;
+
+        public IngredientController(IngredientService service)
         {
-            _repository = repository;
+            _service = service;
         }
 
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.NoContent)]
-        public async Task<IActionResult> Get()
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public IActionResult Get()
         {
-            var bakedProducts = _repository.Get(x => true).ToList();
+            var ingredients = _service.GetAll();
 
-            if (bakedProducts.Any())
-                return Ok(bakedProducts);
+            if (ingredients.Any())
+            {
+                return Ok(ingredients);
+            }
 
-            return NoContent();
+            return BadRequest();
         }
+        [HttpGet("{id}")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public IActionResult Get(int id)
+        {
+            var ingredient = _service.GetById(id);
+
+            if (ingredient is not null)
+            {
+                return Ok(ingredient);
+            }
+
+            return BadRequest();
+        }
+
 
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.Created)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Post([FromBody] Ingredient ingredient)
+        public async Task<IActionResult> Post([FromBody] IngredientCreateDto dto)
         {
-            _repository.Add(ingredient);
-            await _repository.SaveChanges();
-            return CreatedAtAction(nameof(Post), new { ingredient.Id }, ingredient);
+            var id = _service.Register(dto);
+            await _service.CommitChangesAsync();
+
+            return CreatedAtAction(nameof(Post), new { id }, new { id, dto.Name, dto.Quantity, dto.Measurement });
+        }
+        [HttpPut("{id}")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> Update(int id, [FromBody] IngredientCreateDto dto)
+        {
+            var ingredient = _service.GetById(id);
+            if(ingredient is null) 
+            {
+                return BadRequest(ingredient);
+            }
+
+            _service.Update(ingredient.Id, dto);
+            await _service.CommitChangesAsync();
+
+            return Ok(ingredient);
+
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var ingredient = _service.GetById(id);
+
+            if (ingredient is null)
+            {
+                return BadRequest(ingredient);
+            }
+
+            _service.Delete(id);
+            await _service.CommitChangesAsync();
+
+            return NoContent();
         }
     }
 }

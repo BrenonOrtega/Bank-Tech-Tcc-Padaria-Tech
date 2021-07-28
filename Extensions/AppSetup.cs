@@ -32,6 +32,7 @@ namespace PadariaTech.Extensions
             services.AddScoped<RecipeService>();
             services.AddTransient<ProductService>();
             services.AddTransient<BakedProductService>();
+            services.AddTransient<IngredientService>();
             
             return services;
         }
