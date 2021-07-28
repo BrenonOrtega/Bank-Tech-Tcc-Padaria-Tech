@@ -56,8 +56,9 @@ namespace PadariaTech.Controllers
             var id = _service.Register(dto);
             await _service.CommitChangesAsync();
 
-            return CreatedAtAction(nameof(Post), new { id }, new { id, dto.Name, dto.Quantity, dto.Measurement });
+            return CreatedAtAction(nameof(Get), new { id }, new { id, dto.Name, dto.Quantity, dto.Measurement });
         }
+
         [HttpPut("{id}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using PadariaTech.Enum;
+using PadariaTech.Domain.Enum;
 
-namespace PadariaTech.Dtos.Create
+namespace PadariaTech.Application.Dtos.Create
 {
     public class ProductCreateDto
     {

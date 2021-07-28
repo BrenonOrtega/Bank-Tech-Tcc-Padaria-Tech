@@ -1,8 +1,8 @@
-using PadariaTech.Enum;
-using System.ComponentModel.DataAnnotations;
+using PadariaTech.Domain.Enum;
 using System.Text.Json.Serialization;
+using System.ComponentModel.DataAnnotations;
 
-namespace PadariaTech.Dtos.Read
+namespace PadariaTech.Application.Dtos.Read
 {
     public class ProductReadDto
     {

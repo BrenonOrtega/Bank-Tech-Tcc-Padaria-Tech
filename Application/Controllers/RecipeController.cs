@@ -2,11 +2,11 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using PadariaTech.Dtos.Create;
-using PadariaTech.Models;
+using PadariaTech.Application.Dtos.Create;
+using PadariaTech.Domain.Models;
 using PadariaTech.Services;
 
-namespace TccPadariaTech.Controllers
+namespace TccPadariaTech.Application.Controllers
 {
     [ApiController]
     [Route("[Controller]")]

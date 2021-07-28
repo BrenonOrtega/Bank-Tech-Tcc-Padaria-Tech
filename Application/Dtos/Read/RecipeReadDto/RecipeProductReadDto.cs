@@ -1,4 +1,4 @@
-namespace PadariaTech.Dtos.Read
+namespace PadariaTech.Application.Dtos.Read
 {
     public class RecipeProductReadDto
     {

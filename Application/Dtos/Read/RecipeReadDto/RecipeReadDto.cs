@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace PadariaTech.Dtos.Read
+namespace PadariaTech.Application.Dtos.Read
 {
     public class RecipeReadDto
     {

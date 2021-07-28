@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace PadariaTech.Dtos.Create
+namespace PadariaTech.Application.Dtos.Create
 {
     public class IngredientCreateDto
     {
