@@ -3,17 +3,15 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PadariaTech.Data;
 
-namespace PadariaTech.Migrations
+namespace PadariaTech.Data.Migrations
 {
     [DbContext(typeof(BakeryContext))]
-    [Migration("20210726225752_InitialMigration")]
-    partial class InitialMigration
+    partial class BakeryContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,7 +19,7 @@ namespace PadariaTech.Migrations
                 .HasAnnotation("ProductVersion", "5.0.8")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("PadariaTech.Models.Ingredient", b =>
+            modelBuilder.Entity("PadariaTech.Domain.Models.Ingredient", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -55,7 +53,7 @@ namespace PadariaTech.Migrations
                     b.ToTable("Ingredients");
                 });
 
-            modelBuilder.Entity("PadariaTech.Models.Product", b =>
+            modelBuilder.Entity("PadariaTech.Domain.Models.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -80,8 +78,9 @@ namespace PadariaTech.Migrations
                     b.Property<double>("StockQuantity")
                         .HasColumnType("float");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -90,7 +89,7 @@ namespace PadariaTech.Migrations
                     b.HasDiscriminator<string>("Discriminator").HasValue("Product");
                 });
 
-            modelBuilder.Entity("PadariaTech.Models.Recipe", b =>
+            modelBuilder.Entity("PadariaTech.Domain.Models.Recipe", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -115,22 +114,22 @@ namespace PadariaTech.Migrations
                     b.ToTable("Recipes");
                 });
 
-            modelBuilder.Entity("PadariaTech.Models.BakedProduct", b =>
+            modelBuilder.Entity("PadariaTech.Domain.Models.BakedProduct", b =>
                 {
-                    b.HasBaseType("PadariaTech.Models.Product");
+                    b.HasBaseType("PadariaTech.Domain.Models.Product");
 
                     b.HasDiscriminator().HasValue("BakedProduct");
                 });
 
-            modelBuilder.Entity("PadariaTech.Models.Ingredient", b =>
+            modelBuilder.Entity("PadariaTech.Domain.Models.Ingredient", b =>
                 {
-                    b.HasOne("PadariaTech.Models.Product", "Product")
+                    b.HasOne("PadariaTech.Domain.Models.Product", "Product")
                         .WithOne("Ingredient")
-                        .HasForeignKey("PadariaTech.Models.Ingredient", "IdProduct")
+                        .HasForeignKey("PadariaTech.Domain.Models.Ingredient", "IdProduct")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PadariaTech.Models.Recipe", "Recipe")
+                    b.HasOne("PadariaTech.Domain.Models.Recipe", "Recipe")
                         .WithMany("Ingredients")
                         .HasForeignKey("RecipeId1");
 
@@ -139,28 +138,28 @@ namespace PadariaTech.Migrations
                     b.Navigation("Recipe");
                 });
 
-            modelBuilder.Entity("PadariaTech.Models.Recipe", b =>
+            modelBuilder.Entity("PadariaTech.Domain.Models.Recipe", b =>
                 {
-                    b.HasOne("PadariaTech.Models.BakedProduct", "BakedProduct")
+                    b.HasOne("PadariaTech.Domain.Models.BakedProduct", "BakedProduct")
                         .WithOne("Recipe")
-                        .HasForeignKey("PadariaTech.Models.Recipe", "BakedProductId")
+                        .HasForeignKey("PadariaTech.Domain.Models.Recipe", "BakedProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("BakedProduct");
                 });
 
-            modelBuilder.Entity("PadariaTech.Models.Product", b =>
+            modelBuilder.Entity("PadariaTech.Domain.Models.Product", b =>
                 {
                     b.Navigation("Ingredient");
                 });
 
-            modelBuilder.Entity("PadariaTech.Models.Recipe", b =>
+            modelBuilder.Entity("PadariaTech.Domain.Models.Recipe", b =>
                 {
                     b.Navigation("Ingredients");
                 });
 
-            modelBuilder.Entity("PadariaTech.Models.BakedProduct", b =>
+            modelBuilder.Entity("PadariaTech.Domain.Models.BakedProduct", b =>
                 {
                     b.Navigation("Recipe");
                 });

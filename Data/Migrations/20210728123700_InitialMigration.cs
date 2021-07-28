@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace PadariaTech.Migrations
+namespace PadariaTech.Data.Migrations
 {
     public partial class InitialMigration : Migration
     {
@@ -15,7 +15,7 @@ namespace PadariaTech.Migrations
                     Price = table.Column<decimal>(type: "decimal(5,2)", nullable: false),
                     StockQuantity = table.Column<double>(type: "float", nullable: false),
                     Measure = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
-                    Type = table.Column<int>(type: "int", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true)
                 },
