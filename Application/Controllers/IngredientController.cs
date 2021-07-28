@@ -2,7 +2,7 @@ using System.Net;
 using System.Linq;
 using System.Threading.Tasks;
 using PadariaTech.Application.Dtos.Create;
-using PadariaTech.Services;
+using PadariaTech.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace PadariaTech.Controllers
@@ -20,7 +20,7 @@ namespace PadariaTech.Controllers
 
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public IActionResult Get()
         {
             var ingredients = _service.GetAll();
@@ -30,11 +30,12 @@ namespace PadariaTech.Controllers
                 return Ok(ingredients);
             }
 
-            return BadRequest();
+            return NoContent();
         }
+
         [HttpGet("{id}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public IActionResult Get(int id)
         {
             var ingredient = _service.GetById(id);
@@ -44,9 +45,8 @@ namespace PadariaTech.Controllers
                 return Ok(ingredient);
             }
 
-            return BadRequest();
+            return NoContent();
         }
-
 
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.Created)]
@@ -56,7 +56,7 @@ namespace PadariaTech.Controllers
             var id = _service.Register(dto);
             await _service.CommitChangesAsync();
 
-            return CreatedAtAction(nameof(Get), new { id }, new { id, dto.Name, dto.Quantity, dto.Measurement });
+            return CreatedAtAction(nameof(Get), new { id }, new { id, dto.Name, dto.Quantity, dto.Measurement, dto.IdRecipe });
         }
 
         [HttpPut("{id}")]
@@ -74,11 +74,10 @@ namespace PadariaTech.Controllers
             await _service.CommitChangesAsync();
 
             return Ok(ingredient);
-
         }
 
         [HttpDelete("{id}")]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> Delete(int id)
         {
@@ -86,9 +85,8 @@ namespace PadariaTech.Controllers
 
             if (ingredient is null)
             {
-                return BadRequest(ingredient);
+                return NotFound();
             }
-
             _service.Delete(id);
             await _service.CommitChangesAsync();
 
