@@ -1,13 +1,15 @@
-using System.Collections.Generic;
+using AutoMapper;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
-using PadariaTech.Interfaces;
-using PadariaTech.Models.Base;
+using System.Collections.Generic;
+using PadariaTech.Domain.Interfaces;
+using PadariaTech.Domain.Models;
 
 namespace PadariaTech.Services
 {
-    public abstract class BaseService<T, TRead, TCreate> where T : EntityBase  where TRead : new()
+    public abstract class BaseService<T, TRead, TCreate> 
+        where T : EntityBase 
+        where TRead : new()
     {
         private readonly IGenericRepository<T> _repository;
         private readonly IMapper _mapper;
@@ -16,6 +18,25 @@ namespace PadariaTech.Services
         {
             _repository = repository;
             _mapper = mapper;
+        }
+
+        ///<Returns>Registered model id</Returns>
+        protected virtual int Register(T model)
+        {
+            if (model is not null)
+            {
+                _repository.Add(model);
+            }
+
+            return model.Id;
+        }
+
+        public void Update(int id, T model)
+        {
+            if (model is not null)
+            {
+                _repository.Update(id, model);
+            }
         }
 
         public IEnumerable<TRead> GetAll()
@@ -41,19 +62,6 @@ namespace PadariaTech.Services
             return mappedModel;
         }
 
-        ///<Returns>Registered model id</Returns>
-        public int Register(TCreate modelDto)
-        {
-            var model = _mapper.Map<T>(modelDto);
-
-            if (model is not null)
-            {
-                _repository.Add(model);
-            }
-
-            return model.Id;
-        }
-
         public void Delete(int id)
         {
             var model = QueryById(id);
@@ -64,26 +72,16 @@ namespace PadariaTech.Services
             }
         }
 
-        public void Update(int id, TCreate dto)
-        {
-            var model = _mapper.Map<T>(dto);
-
-            if (model is not null)
-            {
-                _repository.Update(id, model);
-            }
-        }
-
         protected T QueryById(int id)
         {
-            var model = _repository.Get(prod => prod.Id.Equals(id)).FirstOrDefault();
+            var model = _repository
+                .Get(prod => prod.Id.Equals(id))
+                .FirstOrDefault();
 
             return model;
         }
 
-        public Task<int> CommitChangesAsync()
-        {
-            return  _repository.SaveChanges();
-        }
+        public Task<int> CommitChangesAsync() =>  
+            _repository.SaveChanges();
     }
 }
