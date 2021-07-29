@@ -10,23 +10,23 @@ namespace PadariaTech.Data.Repository
 {
     public abstract class BaseRepository<T> : IGenericRepository<T> where T : EntityBase
     {
-        private readonly DbContext _context;
+        protected readonly DbContext _context;
 
-        private readonly DbSet<T> _dbSet;
+        protected readonly DbSet<T> _dbSet;
 
         public BaseRepository(DbContext context)
         {
             _context = context;
             _dbSet = _context.Set<T>();
         }
-        public IQueryable<T> Get(Expression<Func<T, bool>> expression)
+        public virtual IQueryable<T> Get(Expression<Func<T, bool>> expression)
         {
             var query = _dbSet.Where(expression);
 
             return query;
         }
 
-        public T GetById(int id)
+        public virtual T GetById(int id)
         {
            return Get(x => x.Id == id).OfType<T>().FirstOrDefault();
         }
