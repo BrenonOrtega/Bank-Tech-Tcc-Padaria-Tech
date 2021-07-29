@@ -20,25 +20,31 @@ namespace PadariaTech.Application.Services
             _mapper = mapper;
         }
 
-        public abstract Task<int> Register(TCreate dto);
-        public abstract Task<bool> Update(int id, TCreate dto);
+        protected abstract T GetCreatedModel(TCreate dto);
 
-        protected virtual int Register(T model)
+        protected abstract T GetUpdatedModel(int id, TCreate dto);
+
+        public virtual async Task<int> Register(TCreate dto)
         {
+            var model = GetCreatedModel(dto);
+
             if (model is not null)
             {
                 _repository.Add(model);
             }
-
+            await CommitChangesAsync();
             return model.Id;
         }
 
-        public void Update(int id, T model)
+        public async Task Update(int id, TCreate dto)
         {
+            var model = GetUpdatedModel(id, dto);
+
             if (model is not null)
             {
                 _repository.Update(id, model);
             }
+            await CommitChangesAsync();
         }
 
         public IEnumerable<TRead> GetAll()

@@ -51,7 +51,7 @@ namespace PadariaTech.Application.Controllers
         }
 
         [HttpPut("{id}/[Action]/{ingredientId}")]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.Accepted)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> Ingredients(int id, int ingredientId, [FromBody]IngredientCreateDto dto)
         {
