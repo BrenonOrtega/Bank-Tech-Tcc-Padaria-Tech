@@ -46,7 +46,7 @@ namespace PadariaTech.Application.Services
 
         public override BakedProductReadDto GetById(int id)
         {
-            var mappedModel = GetById(id);
+            var mappedModel = base.GetById(id);
            
             var recipe = _recipeRepo.Get(recipe => recipe.BakedProduct.Id == id).FirstOrDefault();
             mappedModel.Recipe = _mapper.Map<BakedProductRecipeReadDto>(recipe);
