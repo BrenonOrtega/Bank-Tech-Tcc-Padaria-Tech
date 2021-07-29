@@ -52,17 +52,16 @@ namespace PadariaTech.Application.Controllers
 
         [HttpPut("{id}/[Action]/{ingredientId}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> Ingredients(int id, int ingredientId, [FromBody]IngredientCreateDto dto)
         {
             var ingredient = _ingredientService.GetById(ingredientId);
             if(ingredient is null) 
             {
-                return BadRequest(ingredient);
+                return NotFound(ingredient);
             }
 
-            _ingredientService.Update(id, dto);
-            await _ingredientService.CommitChangesAsync();
+            await _ingredientService.Update(id, dto);
 
             return Accepted(ingredient);
         }
