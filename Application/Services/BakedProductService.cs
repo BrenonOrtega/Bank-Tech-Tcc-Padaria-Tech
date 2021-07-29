@@ -25,7 +25,9 @@ namespace PadariaTech.Application.Services
         protected override BakedProduct GetCreatedModel(BakedProductCreateDto dto)
         {
             var newBakedProduct = _mapper.Map<BakedProduct>(dto);
-            newBakedProduct.Recipe = GetRecipeById(newBakedProduct.RecipeId);
+
+            if(_recipeRepo.Get(x => true).Any(x => x.Id == newBakedProduct.RecipeId))
+             throw new System.ArgumentException("RecipeId must be unique");
 
             return newBakedProduct;
         }
