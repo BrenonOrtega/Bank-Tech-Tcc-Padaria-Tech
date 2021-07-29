@@ -47,7 +47,7 @@ namespace PadariaTech.Application.Controllers
             var id = _ingredientService.Register(dto);
             await _ingredientService.CommitChangesAsync();
 
-            return CreatedAtAction(nameof(Ingredients), new { id }, new { id, dto.Name, dto.Quantity, dto.Measurement, dto.IdRecipe });
+            return CreatedAtAction(nameof(Ingredients), new { id }, new { id, dto.Name, dto.Quantity, dto.Measurement, dto.RecipeId });
         }
 
         [HttpPut("{id}/[Action]/{ingredientId}")]
