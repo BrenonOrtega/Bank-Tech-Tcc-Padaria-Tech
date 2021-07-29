@@ -7,6 +7,5 @@ namespace PadariaTech.Application.Dtos.Read
         public string Name { get; set; }
 
         public double Portion { get; set; }
-    
     }
 }

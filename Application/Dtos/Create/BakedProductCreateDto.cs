@@ -5,7 +5,7 @@ namespace PadariaTech.Application.Dtos.Create
     public class BakedProductCreateDto : ProductCreateDto
     {
         [Required]
-        public int IdRecipe { get; set; }
+        public int RecipeId { get; set; }
 
     }
 }
