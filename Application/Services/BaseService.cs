@@ -7,53 +7,60 @@ using PadariaTech.Domain.Models;
 
 namespace PadariaTech.Application.Services
 {
-    public abstract class BaseService<T, TRead, TCreate> 
-        where T : EntityBase 
+    public abstract class BaseService<TModel, TRead, TCreate> 
+        where TModel : EntityBase 
         where TRead : new()
     {
-        protected readonly IGenericRepository<T> _repository; 
+        protected readonly IGenericRepository<TModel> _repository; 
         protected readonly IMapper _mapper;
 
-        public BaseService(IGenericRepository<T> repository, IMapper mapper)
+        public BaseService(IGenericRepository<TModel> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
         }
 
-        public abstract Task<int> Register(TCreate dto);
-        public abstract Task<bool> Update(int id, TCreate dto);
+        protected abstract TModel GetCreatedModel(TCreate dto);
 
-        protected virtual int Register(T model)
+        protected abstract TModel GetUpdatedModel(int id, TCreate dto);
+
+        public virtual async Task<int> Register(TCreate dto)
         {
+            var model = GetCreatedModel(dto);
+
             if (model is not null)
             {
                 _repository.Add(model);
             }
-
+            await CommitChangesAsync();
             return model.Id;
         }
 
-        public void Update(int id, T model)
+        public async Task Update(int id, TCreate dto)
         {
+            var model = GetUpdatedModel(id, dto);
+
             if (model is not null)
             {
                 _repository.Update(id, model);
             }
+            await CommitChangesAsync();
         }
 
-        public IEnumerable<TRead> GetAll()
+        public virtual IEnumerable<TRead> GetAll()
         {
             var model = _repository
                 .Get(x => true)
+                .OfType<TModel>()
                 .Select(x => _mapper.Map<TRead>(x))
                 .ToList();
 
             return model;
         }
 
-        public TRead GetById(int id)
+        public virtual TRead GetById(int id)
         {
-            var model = QueryById(id);
+            var model = _repository.GetById(id);
 
             if (model is null)
             {
@@ -66,21 +73,12 @@ namespace PadariaTech.Application.Services
 
         public void Delete(int id)
         {
-            var model = QueryById(id);
+            var model = _repository.GetById(id);
 
             if (model is not null)
             {
                 _repository.Delete(model);
             }
-        }
-
-        protected T QueryById(int id)
-        {
-            var model = _repository
-                .Get(prod => prod.Id.Equals(id))
-                .FirstOrDefault();
-
-            return model;
         }
 
         public Task<int> CommitChangesAsync() =>  

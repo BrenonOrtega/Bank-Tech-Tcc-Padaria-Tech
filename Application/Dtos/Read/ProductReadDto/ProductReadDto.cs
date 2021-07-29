@@ -18,6 +18,16 @@ namespace PadariaTech.Application.Dtos.Read
 
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public ProductTypes ProductType { get; set; }
+
+        public bool IsEmpty 
+        { 
+            get => Id <= 0 
+                && Price <= decimal.Zero 
+                && StockQuantity <= 0 
+                && string.IsNullOrEmpty(Name) 
+                && string.IsNullOrEmpty(Measure)
+                ; 
+        }
     }
 
 }

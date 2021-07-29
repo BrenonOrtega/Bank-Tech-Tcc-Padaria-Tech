@@ -47,23 +47,23 @@ namespace PadariaTech.Application.Controllers
             var id = _ingredientService.Register(dto);
             await _ingredientService.CommitChangesAsync();
 
-            return CreatedAtAction(nameof(Ingredients), new { id }, new { id, dto.Name, dto.Quantity, dto.Measurement, dto.IdRecipe });
+            return CreatedAtAction(nameof(Ingredients), new { id }, new { id, dto.Name, dto.Quantity, dto.Measurement, dto.RecipeId });
         }
 
         [HttpPut("{id}/[Action]/{ingredientId}")]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Ingredients(int id, int ingredientId, [FromBody] IngredientCreateDto dto)
+        [ProducesResponseType((int)HttpStatusCode.Accepted)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> Ingredients(int id, int ingredientId, [FromBody]IngredientCreateDto dto)
         {
             var ingredient = _ingredientService.GetById(ingredientId);
             if(ingredient is null) 
             {
-                return BadRequest(ingredient);
+                return NotFound(ingredient);
             }
 
             await _ingredientService.Update(id, dto);
 
-            return Ok(ingredient);
+            return Accepted(ingredient);
         }
 
         [HttpDelete("{id}/Ingredients/{ingredientId}")]

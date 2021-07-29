@@ -1,6 +1,8 @@
+using System;
 using AutoMapper;
 using PadariaTech.Application.Dtos.Create;
 using PadariaTech.Application.Dtos.Read;
+using PadariaTech.Domain.Enum;
 using PadariaTech.Domain.Models;
 
 namespace PadariaTech.Profiles
@@ -9,12 +11,14 @@ namespace PadariaTech.Profiles
     {
         public BakedProductProfile()
         {
-            CreateMap<BakedProductCreateDto, BakedProduct>();
+            CreateMap<Recipe, BakedProductRecipeReadDto>();
+
+            CreateMap<BakedProductCreateDto, BakedProduct>()
+                .ForMember(model => model.Recipe, options => options.Ignore())
+                .ForMember(model => model.Type, options => options.MapFrom(dto => dto.ProductType));
 
             CreateMap<BakedProduct, BakedProductReadDto>()
-                .ForMember(readDto => readDto.Recipe, opt => opt.MapFrom(model => model.Recipe));
-
-            CreateMap<Recipe, BakedProductRecipeReadDto>();
+               ;
         }
     }
 }

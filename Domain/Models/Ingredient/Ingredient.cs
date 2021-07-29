@@ -12,9 +12,9 @@ namespace PadariaTech.Domain.Models
         [MaxLength(35)]
         public string Measurement { get; set; }
 
-        public int IdProduct;
+        public int ProductId;
 
-        [ForeignKey(nameof(IdProduct))]
+        [ForeignKey(nameof(ProductId))]
         public Product Product { get; set;}
 
         public int RecipeId;

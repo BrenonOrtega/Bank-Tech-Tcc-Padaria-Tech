@@ -14,16 +14,12 @@ namespace PadariaTech.Application.Services
         {
         }
 
-        public override async Task<int> Register(RecipeCreateDto dto)
+        protected override Recipe GetCreatedModel(RecipeCreateDto dto)
         {
-            var model = _mapper.Map<Recipe>(dto);
-            base.Register(model);
-            await CommitChangesAsync();
-
-            return model.Id;
+            throw new System.NotImplementedException();
         }
 
-        public override Task<bool> Update(int id, RecipeCreateDto dto)
+        protected override Recipe GetUpdatedModel(int id, RecipeCreateDto dto)
         {
             throw new System.NotImplementedException();
         }

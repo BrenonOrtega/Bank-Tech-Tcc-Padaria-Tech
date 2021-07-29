@@ -13,12 +13,12 @@ namespace PadariaTech.Application.Services
         {
         }
 
-        public override Task<int> Register(ProductCreateDto dto)
+        protected override Product GetCreatedModel(ProductCreateDto dto)
         {
             throw new System.NotImplementedException();
         }
 
-        public override Task<bool> Update(int id, ProductCreateDto dto)
+        protected override Product GetUpdatedModel(int id, ProductCreateDto dto)
         {
             throw new System.NotImplementedException();
         }

@@ -14,10 +14,10 @@ namespace PadariaTech.Application.Dtos.Create
         public string Measurement { get; set; }
 
         [Required]
-        public int IdProduct { get; set; }
+        public int ProductId { get; set; }
 
         [Required]
-        public int IdRecipe { get; set; }
+        public int RecipeId { get; set; }
     }
 
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -26,16 +27,36 @@ namespace PadariaTech.Application.Controllers
             return Ok(mappedBakedProducts);
         }
 
-        [HttpPost]
-        [ProducesResponseType((int)HttpStatusCode.Created)]
-        public async Task<IActionResult> Post([FromBody]BakedProductCreateDto dto)
+        [HttpGet("{id}")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public IActionResult Get(int id)
         {
-            _service.Register(dto);
-            await _service.CommitChangesAsync();
+            var bakedProduct =  _service.GetById(id);
 
-            return CreatedAtAction(nameof(Post),  dto);
+            if(bakedProduct.IsEmpty)
+            {
+                return NotFound();
+            }
+
+            return Ok(bakedProduct);
         }
 
-
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> Post([FromBody]BakedProductCreateDto dto)
+        {
+            try 
+            {
+                var id = await _service.Register(dto);
+    
+                return CreatedAtAction(nameof(Get), new { id },  new { id, dto.Name });
+            } 
+            catch (Exception ex)
+            {
+                return BadRequest(new { ErrorMessage = ex.Message });
+            }
+        }
     }
 }
