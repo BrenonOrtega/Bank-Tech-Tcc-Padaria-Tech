@@ -7,22 +7,22 @@ using PadariaTech.Domain.Models;
 
 namespace PadariaTech.Application.Services
 {
-    public abstract class BaseService<T, TRead, TCreate> 
-        where T : EntityBase 
+    public abstract class BaseService<TModel, TRead, TCreate> 
+        where TModel : EntityBase 
         where TRead : new()
     {
-        protected readonly IGenericRepository<T> _repository; 
+        protected readonly IGenericRepository<TModel> _repository; 
         protected readonly IMapper _mapper;
 
-        public BaseService(IGenericRepository<T> repository, IMapper mapper)
+        public BaseService(IGenericRepository<TModel> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
         }
 
-        protected abstract T GetCreatedModel(TCreate dto);
+        protected abstract TModel GetCreatedModel(TCreate dto);
 
-        protected abstract T GetUpdatedModel(int id, TCreate dto);
+        protected abstract TModel GetUpdatedModel(int id, TCreate dto);
 
         public virtual async Task<int> Register(TCreate dto)
         {
@@ -47,19 +47,20 @@ namespace PadariaTech.Application.Services
             await CommitChangesAsync();
         }
 
-        public IEnumerable<TRead> GetAll()
+        public virtual IEnumerable<TRead> GetAll()
         {
             var model = _repository
                 .Get(x => true)
+                .OfType<TModel>()
                 .Select(x => _mapper.Map<TRead>(x))
                 .ToList();
 
             return model;
         }
 
-        public TRead GetById(int id)
+        public virtual TRead GetById(int id)
         {
-            var model = QueryById(id);
+            var model = _repository.GetById(id);
 
             if (model is null)
             {
@@ -72,21 +73,12 @@ namespace PadariaTech.Application.Services
 
         public void Delete(int id)
         {
-            var model = QueryById(id);
+            var model = _repository.GetById(id);
 
             if (model is not null)
             {
                 _repository.Delete(model);
             }
-        }
-
-        protected T QueryById(int id)
-        {
-            var model = _repository
-                .Get(prod => prod.Id.Equals(id))
-                .FirstOrDefault();
-
-            return model;
         }
 
         public Task<int> CommitChangesAsync() =>  
