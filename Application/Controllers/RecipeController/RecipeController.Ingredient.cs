@@ -53,7 +53,7 @@ namespace PadariaTech.Application.Controllers
         [HttpPut("{id}/[Action]/{ingredientId}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Ingredients(int id, int ingredientId, [FromBody] IngredientCreateDto dto)
+        public async Task<IActionResult> Ingredients(int id, int ingredientId, [FromBody]IngredientCreateDto dto)
         {
             var ingredient = _ingredientService.GetById(ingredientId);
             if(ingredient is null) 
@@ -61,9 +61,10 @@ namespace PadariaTech.Application.Controllers
                 return BadRequest(ingredient);
             }
 
-            await _ingredientService.Update(id, dto);
+            _ingredientService.Update(id, dto);
+            await _ingredientService.CommitChangesAsync();
 
-            return Ok(ingredient);
+            return Accepted(ingredient);
         }
 
         [HttpDelete("{id}/Ingredients/{ingredientId}")]
