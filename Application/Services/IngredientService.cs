@@ -14,17 +14,23 @@ namespace PadariaTech.Application.Services
     {
         private readonly IProductRepository _productRepo;
         private readonly IRecipeRepository _recipeRepo;
-        public IngredientService(IIngredientRepository ingredientRepository, IMapper mapper)
+        public IngredientService(
+            IIngredientRepository ingredientRepository,
+            IProductRepository productRepo,
+            IRecipeRepository RecipeRepo,
+            IMapper mapper)
             : base(ingredientRepository, mapper)
         {
+            _productRepo = productRepo;
+            _recipeRepo = RecipeRepo;
         }
 
         protected override Ingredient GetCreatedModel(IngredientCreateDto dto)
         {
             var newIngredient = _mapper.Map<Ingredient>(dto);
 
-            newIngredient.Product = _productRepo.GetById(dto.IdProduct);
-            newIngredient.Recipe = _recipeRepo.GetById(dto.IdRecipe);
+            newIngredient.Product = _productRepo.GetById(dto.ProductId);
+            newIngredient.Recipe = _recipeRepo.GetById(dto.RecipeId);
 
             return newIngredient;
         }
@@ -36,8 +42,8 @@ namespace PadariaTech.Application.Services
 
             if (ingredient is not null)
             {
-                if (ingredient.IdProduct != updatedIngredient.IdProduct)
-                    updatedIngredient.Product = _productRepo.GetById(updatedIngredient.IdProduct);
+                if (ingredient.ProductId != updatedIngredient.ProductId)
+                    updatedIngredient.Product = _productRepo.GetById(updatedIngredient.ProductId);
                 
                 if(ingredient.RecipeId != updatedIngredient.RecipeId)
                     updatedIngredient.Recipe = _recipeRepo.GetById(updatedIngredient.RecipeId);
