@@ -14,23 +14,13 @@ namespace PadariaTech.Application.Services
         {
         }
 
-        public override async Task<int> Register(BakedProductCreateDto dto)
+        protected override BakedProduct GetCreatedModel(BakedProductCreateDto dto)
         {
-            //Example
-            //Manipulate dto, make validations, map to model, add relationship.
-            //Code here.
-
-            //base.Register(model: newModel);
             throw new System.NotImplementedException();
         }
 
-        public override Task<bool> Update(int id, BakedProductCreateDto dto)
+        protected override BakedProduct GetUpdatedModel(int id, BakedProductCreateDto dto)
         {
-            //Example
-            //Manipulate dto, make validations, map to model, add relationship.
-            //Code here.
-
-            //base.Update(id: id, model: updatedModel);
             throw new System.NotImplementedException();
         }
     }
