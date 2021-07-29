@@ -13,10 +13,9 @@ namespace PadariaTech.Profiles
             CreateMap<Recipe, IngredientRecipeReadDto>();
 
             CreateMap<IngredientCreateDto, Ingredient>();
-
             CreateMap<Ingredient, IngredientReadDto>()
-                .ForMember(readDto => readDto.Recipe, opt => opt.MapFrom(model => model.Recipe))
-                .ForMember(readDto => readDto.Product, opt => opt.MapFrom(model => model.Product));
+                .ForMember(readDto => readDto.Recipe, opt => opt.MapFrom(model => new { Recipe = model.Recipe }))
+                .ForMember(readDto => readDto.Product, opt => opt.MapFrom(model => new { Product = model.Product }));
         }        
     }
 }

@@ -10,8 +10,6 @@ namespace PadariaTech.Profiles
         public RecipeProfile()
         {
             CreateMap<BakedProduct, RecipeProductReadDto>();
-            CreateMap<Ingredient, IngredientReadDto>();
-
             CreateMap<RecipeCreateDto, Recipe>();
 
             CreateMap<Recipe, RecipeReadDto>()

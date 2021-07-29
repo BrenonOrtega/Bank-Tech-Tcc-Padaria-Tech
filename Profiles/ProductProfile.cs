@@ -9,8 +9,11 @@ namespace PadariaTech.Profiles
     {
         public ProductProfile()
         {
-            CreateMap<Product, ProductReadDto>();
             CreateMap<ProductCreateDto, Product>();
+            
+            CreateMap<Product, ProductReadDto>()
+                .ForMember(dto => dto.ProductType, opt => opt.MapFrom(model => model.Type))
+                .IncludeAllDerived();
         }
     }
 }

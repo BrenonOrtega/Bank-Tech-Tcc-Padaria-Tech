@@ -8,6 +8,7 @@ using Microsoft.OpenApi.Models;
 using PadariaTech.Extensions;
 using PadariaTech.Data;
 using AutoMapper;
+using System;
 
 namespace PadariaTech
 {
@@ -40,10 +41,18 @@ namespace PadariaTech
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, BakeryContext context)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, BakeryContext context, IMapper mapper)
         {
             if(context.Database.CanConnect())
                 context.Database.Migrate();
+
+            try
+            {
+                mapper.ConfigurationProvider.AssertConfigurationIsValid();
+            } catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
 
             if (env.IsDevelopment())
             {
