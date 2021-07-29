@@ -19,6 +19,15 @@ namespace PadariaTech.Data.Repository
             _context = context;
             _dbSet = _context.Set<T>();
         }
+        public IQueryable<T> Get(Expression<Func<T, bool>> expression)
+        {
+            return _dbSet.Where(expression);
+        }
+
+        public T GetById(int id)
+        {
+           return Get(x => x.Id == id).FirstOrDefault();
+        }
 
         public void Add(T entity)
         {
@@ -30,10 +39,6 @@ namespace PadariaTech.Data.Repository
             _dbSet.Remove(entity);
         }
 
-        public IQueryable<T> Get(Expression<Func<T, bool>> expression)
-        {
-            return _dbSet.Where(expression);
-        }
 
         public Task<int> SaveChanges()
         {
@@ -49,5 +54,6 @@ namespace PadariaTech.Data.Repository
                 _context.Entry(result).CurrentValues.SetValues(entity);
             }
         }
+
     }
 }
