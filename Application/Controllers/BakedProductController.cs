@@ -30,8 +30,7 @@ namespace PadariaTech.Application.Controllers
         [ProducesResponseType((int)HttpStatusCode.Created)]
         public async Task<IActionResult> Post([FromBody]BakedProductCreateDto dto)
         {
-            _service.Register(dto);
-            await _service.CommitChangesAsync();
+            await _service.Register(dto);
 
             return CreatedAtAction(nameof(Post),  dto);
         }
