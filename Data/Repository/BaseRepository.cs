@@ -21,12 +21,14 @@ namespace PadariaTech.Data.Repository
         }
         public IQueryable<T> Get(Expression<Func<T, bool>> expression)
         {
-            return _dbSet.Where(expression);
+            var query = _dbSet.Where(expression);
+
+            return query;
         }
 
         public T GetById(int id)
         {
-           return Get(x => x.Id == id).FirstOrDefault();
+           return Get(x => x.Id == id).OfType<T>().FirstOrDefault();
         }
 
         public void Add(T entity)
