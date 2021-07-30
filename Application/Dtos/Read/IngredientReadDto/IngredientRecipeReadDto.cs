@@ -8,6 +8,5 @@ namespace PadariaTech.Application.Dtos.Read
 
         public double Portion { get; set; }
 
-        public RecipeProductReadDto Product { get; set; }
     }
 }

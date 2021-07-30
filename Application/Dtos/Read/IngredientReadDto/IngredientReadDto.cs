@@ -4,12 +4,12 @@ namespace PadariaTech.Application.Dtos.Read
     {
         public int Id;
 
-        public IngredientProductReadDto Product { get; set; }
-
         public double Quantity { get; set; }
 
         public string Measurement { get; set; }
 
         public IngredientRecipeReadDto Recipe { get; set; }
+        
+        public IngredientProductReadDto Product { get; set; }
     }
 }

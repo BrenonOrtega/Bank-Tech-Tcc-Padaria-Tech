@@ -22,6 +22,24 @@ namespace PadariaTech.Application.Services
             _recipeRepo = recipeRepo;
         }
 
+        public async Task BakeProduct(int id)
+        {
+            var product = await _repository.GetById(id);
+            
+            if(product is null)
+                throw new KeyNotFoundException("Product does not exist.");
+
+            try
+            {
+                product.Bake();
+                await CommitChangesAsync();
+            }
+            catch
+            {
+                throw new Exception("could not bake product");
+            }
+        }
+
         protected override async Task<BakedProduct> GetCreatedModel(BakedProductCreateDto dto)
         {
             var newBakedProduct = _mapper.Map<BakedProduct>(dto);
@@ -31,7 +49,6 @@ namespace PadariaTech.Application.Services
 
             if (recipe is not null)
             {
-                newBakedProduct.Recipe = recipe;
                 return newBakedProduct;
             }
 
