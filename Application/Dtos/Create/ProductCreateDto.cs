@@ -19,6 +19,6 @@ namespace PadariaTech.Application.Dtos.Create
         public string Measure { get; set; }
 
         [Required]
-        public ProductTypes ProductType { get; set; }
+        public ProductTypes Type { get; set; }
     }
 }
