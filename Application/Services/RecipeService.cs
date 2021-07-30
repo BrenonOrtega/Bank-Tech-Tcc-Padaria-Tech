@@ -10,24 +10,30 @@ namespace PadariaTech.Application.Services
 {
     public class RecipeService : BaseService<Recipe, RecipeReadDto, RecipeCreateDto>
     {
-        private readonly IIngredientRepository _ingredientRepo;
         public RecipeService(IRecipeRepository recipeRepository, IMapper mapper, IBakedProductRepository bakedProductRepository, IIngredientRepository ingredientRepository) 
         : base(recipeRepository, mapper)
         {
-            _ingredientRepo = ingredientRepository;
         }
 
         protected override Recipe GetCreatedModel(RecipeCreateDto dto)
         {
             var modelRecipe = _mapper.Map<Recipe>(dto);
+            if(_repository.Get(x => true).Any(x => x.Name == modelRecipe.Name && x.Portion == modelRecipe.Portion))
+            {
+                throw new System.Exception("A similar recipe already exists.");
+            }
             return modelRecipe;
         }
 
         protected override Recipe GetUpdatedModel(int id, RecipeCreateDto dto)
         {
-            throw new System.NotImplementedException();
+            var updatedRecipe = _mapper.Map<Recipe>(dto);
+            updatedRecipe.Id = id;
+            var originalRecipe = _repository.GetById(id);
 
+            if(originalRecipe is null) throw new KeyNotFoundException("the recipe to be updated does not exists");
 
+            return updatedRecipe;
         }
     }
 }
