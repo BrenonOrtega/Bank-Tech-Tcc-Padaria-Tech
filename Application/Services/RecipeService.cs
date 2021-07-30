@@ -39,7 +39,7 @@ namespace PadariaTech.Application.Services
             var recipeExists = _repository.Get(recipe => recipe.Id.Equals(id)).Any();
             updatedRecipe.Id = id;
 
-            if (recipeExists) 
+            if (!recipeExists) 
             {
                 throw new KeyNotFoundException("the recipe to be updated does not exists");
             }
