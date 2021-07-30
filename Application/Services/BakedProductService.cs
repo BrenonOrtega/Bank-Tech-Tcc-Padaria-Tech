@@ -35,15 +35,20 @@ namespace PadariaTech.Application.Services
         protected override BakedProduct GetUpdatedModel(int id, BakedProductCreateDto dto)
         {
             var updatedBakedProduct = _mapper.Map<BakedProduct>(dto);
+            updatedBakedProduct.Id = id;
             var originalBakedProduct = _repository.GetById(id);
 
-            if (originalBakedProduct is not null && originalBakedProduct.RecipeId != updatedBakedProduct.RecipeId)
+            if (originalBakedProduct is null)
             {
-                updatedBakedProduct.Recipe = GetRecipeById(updatedBakedProduct.Id);
-                return updatedBakedProduct;
+                throw new KeyNotFoundException("This Baked Product does not exists");
             }
+            if(_recipeRepo.Get(x => true).Any(x => x.Id == updatedBakedProduct.RecipeId && x.BakedProduct.Id != id))
+            {
+                throw new ArgumentException("recipeId must be unique");
+            }
+            
+            return updatedBakedProduct;
 
-            throw new KeyNotFoundException("This Baked Product does not exists");
         }
 
         public override BakedProductReadDto GetById(int id)
