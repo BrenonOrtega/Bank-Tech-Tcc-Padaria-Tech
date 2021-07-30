@@ -7,6 +7,7 @@ using PadariaTech.Application.Dtos.Read;
 using PadariaTech.Application.Dtos.Create;
 using PadariaTech.Domain.Models;
 using Microsoft.EntityFrameworkCore;
+using PadariaTech.Domain.Enum;
 
 namespace PadariaTech.Application.Services
 {
@@ -34,10 +35,16 @@ namespace PadariaTech.Application.Services
      
             ThrowIfDoesNotExist(product, recipe, dto);
             ThrowIfDuplicated(product, recipe, dto);
+            ThrowIfFinalProduct(product);
 
             return newIngredient;
         }
 
+        private void ThrowIfFinalProduct(Product product)
+        {
+            if(product.Type == ProductTypes.FinalProduct)
+                throw new ArgumentException("Cannot use a Final product as an ingredient");
+        }
 
         protected async override Task<Ingredient> GetUpdatedModel(int id, IngredientCreateDto dto)
         {
@@ -66,16 +73,15 @@ namespace PadariaTech.Application.Services
         {
             var ingredients = _repository.Get(ingredient => ingredient.Recipe.Id == recipeId).ToArray();
             var mappedIngredients = _mapper.Map<Ingredient[], List<IngredientReadDto>>(ingredients);
-
+            
             return mappedIngredients;
         }
 
         private void ThrowIfDuplicated(Product product, Recipe recipe, IngredientCreateDto dto)
         {
-            var duplicatedProduct = product?.Ingredients.Any(i => i.Name == dto.Name && i.Recipe.Id == dto.RecipeId && i.Quantity == dto.Quantity);
             var duplicatedRecipe = recipe?.Ingredients.Any(i => i.Name == dto.Name && i.Quantity == dto.Quantity && i.ProductId == dto.ProductId);
 
-            if((duplicatedRecipe | duplicatedProduct) ?? false)
+            if((duplicatedRecipe) ?? false)
                 throw new InvalidOperationException("There's a similar ingredient already assigned to recipe or product");
         }
         
