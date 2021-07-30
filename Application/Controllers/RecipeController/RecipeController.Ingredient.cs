@@ -28,7 +28,7 @@ namespace PadariaTech.Application.Controllers
         [HttpGet("{id}/[Action]/{ingredientId}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
-        public IActionResult Ingredients(int id, int ingredientId)
+        public async Task<IActionResult> Ingredients(int id, int ingredientId)
         {
             var ingredient = await _ingredientService.GetById(id);
 
