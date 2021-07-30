@@ -10,14 +10,14 @@ namespace PadariaTech.Domain.Interfaces
     {
         void Add(T entity);
 
-        void Delete(T entity);
+        void Delete(int id);
 
-        void Update(int id, T entity);
+        void Update<V>(int id, T entity, V updatedData);
 
         IQueryable<T> Get(Expression<Func<T, bool>> expression);
 
-        T GetById(int id);
+        Task<T> GetById(int id);
 
-        Task<int> SaveChanges();
+        Task<int> SaveChangesAsync();
     }
 }
