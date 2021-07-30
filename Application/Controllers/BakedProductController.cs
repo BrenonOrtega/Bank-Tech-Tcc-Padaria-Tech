@@ -17,7 +17,7 @@ namespace PadariaTech.Application.Controllers
         {
             _service = service;
         }
-        
+
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<IActionResult> Get()
@@ -32,9 +32,9 @@ namespace PadariaTech.Application.Controllers
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public IActionResult Get(int id)
         {
-            var bakedProduct =  _service.GetById(id);
+            var bakedProduct = _service.GetById(id);
 
-            if(bakedProduct.IsEmpty)
+            if (bakedProduct.IsEmpty)
             {
                 return NotFound();
             }
@@ -45,14 +45,14 @@ namespace PadariaTech.Application.Controllers
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.Created)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Post([FromBody]BakedProductCreateDto dto)
+        public async Task<IActionResult> Post([FromBody] BakedProductCreateDto dto)
         {
-            try 
+            try
             {
                 var id = await _service.Register(dto);
-    
-                return CreatedAtAction(nameof(Get), new { id },  new { id, dto.Name });
-            } 
+
+                return CreatedAtAction(nameof(Get), new { id }, new { id, dto.Name });
+            }
             catch (Exception ex)
             {
                 return BadRequest(new { ErrorMessage = ex.Message });
@@ -66,12 +66,11 @@ namespace PadariaTech.Application.Controllers
         {
             try
             {
-            await _service.Update(id, dto);
-            return Ok();               
+                await _service.Update(id, dto);
+                return Ok();
             }
             catch (Exception e)
             {
-                
                 return BadRequest(new { ErrorMessage = e.Message });
             }
         }
