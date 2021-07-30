@@ -43,15 +43,47 @@ namespace PadariaTech.Application.Controllers
             {
                 var id = await _service.Register(dto);
                 await _service.CommitChangesAsync();
-                return CreatedAtAction(nameof(Post), new { id }, new { id, dto.Name, dto.Price, dto.ProductType });
+                return CreatedAtAction(nameof(Post), new { id }, new { id, dto.Name, dto.Price, dto.Type });
 
-            } catch (Exception ex) 
+            }
+            catch (Exception ex)
             {
                 return BadRequest(new { Message = ex.Message });
             }
         }
 
-        [HttpPut("/delete/{id}")]
+        [HttpGet("{id}")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> Get(int id)
+        {
+            var product = await _service.GetById(id);
+
+            if (product.IsEmpty)
+            {
+                return NotFound();
+            }
+
+            return Ok(product);
+        }
+
+        [HttpPut("{id}")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> Put(int id, [FromBody] ProductCreateDto dto)
+        {
+            try
+            {
+                await _service.Update(id, dto);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { ErrorMessage = e.Message });
+            }
+        }
+
+        [HttpDelete("/delete/{id}")]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> Delete(int id)
