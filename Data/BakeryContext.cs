@@ -20,6 +20,22 @@ namespace PadariaTech.Data
                 .HasConversion(
                     type => type.ToString(),
                     type => (ProductTypes)System.Enum.Parse(typeof(ProductTypes), type));
+
+            builder.Entity<Ingredient>()
+                .HasOne<Product>(i => i.Product)
+                ;
+            
+            builder.Entity<Ingredient>()
+                .HasOne(i => i.Recipe)
+                .WithMany(r => r.Ingredients)
+                .HasForeignKey(i => i.RecipeId)
+                .OnDelete(DeleteBehavior.NoAction)
+                .IsRequired();
+
+            builder.Entity<Recipe>()
+                .HasMany(r => r.Ingredients)
+                .WithOne(i => i.Recipe)
+                .HasForeignKey(i => i.RecipeId);
         }
 
         DbSet<Ingredient> Ingredients { get; set; }
