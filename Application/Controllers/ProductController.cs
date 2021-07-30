@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PadariaTech.Application.Services;
 using PadariaTech.Application.Dtos.Create;
+using System;
 
 namespace PadariaTech.Application.Controllers
 {
@@ -38,10 +39,16 @@ namespace PadariaTech.Application.Controllers
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> Post([FromBody] ProductCreateDto dto)
         {
-            var id = _service.Register(dto);
-            await _service.CommitChangesAsync();
+            try
+            {
+                var id = await _service.Register(dto);
+                await _service.CommitChangesAsync();
+                return CreatedAtAction(nameof(Post), new { id }, new { id, dto.Name, dto.Price, dto.ProductType });
 
-            return CreatedAtAction(nameof(Post), new { id }, new { id, dto.Name, dto.Price, dto.ProductType });
+            } catch (Exception ex) 
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
         }
 
         [HttpPut("/delete/{id}")]
@@ -49,7 +56,7 @@ namespace PadariaTech.Application.Controllers
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> Delete(int id)
         {
-            var product = _service.GetById(id);
+            var product = await _service.GetById(id);
 
             if (product is null)
             {

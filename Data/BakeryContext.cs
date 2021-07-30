@@ -7,7 +7,6 @@ namespace PadariaTech.Data
     {
         public BakeryContext(DbContextOptions options) : base(options)
         {
-
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

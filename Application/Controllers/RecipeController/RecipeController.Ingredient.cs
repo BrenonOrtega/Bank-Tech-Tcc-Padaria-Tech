@@ -3,10 +3,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using PadariaTech.Application.Dtos.Create;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace PadariaTech.Application.Controllers
 {
-    public partial class RecipeController 
+    public partial class RecipeController
     {
 
         [HttpGet("{id}/[Action]")]
@@ -29,7 +30,7 @@ namespace PadariaTech.Application.Controllers
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public IActionResult Ingredients(int id, int ingredientId)
         {
-            var ingredient = _ingredientService.GetById(id);
+            var ingredient = await _ingredientService.GetById(id);
 
             if (ingredient is not null)
             {
@@ -42,21 +43,28 @@ namespace PadariaTech.Application.Controllers
         [HttpPost("{id}/[Action]")]
         [ProducesResponseType((int)HttpStatusCode.Created)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Ingredients([FromBody] IngredientCreateDto dto)
+        public async Task<IActionResult> Ingredients(int id, [FromBody] IngredientCreateDto dto)
         {
-            var id = _ingredientService.Register(dto);
-            await _ingredientService.CommitChangesAsync();
+            try
+            {
+                dto.RecipeId = id;
+                var ingredientId = await _ingredientService.Register(dto);
+                return CreatedAtAction(nameof(Ingredients), new { id, ingredientId }, new { id = ingredientId, dto.Name, dto.Quantity, dto.Measurement });
 
-            return CreatedAtAction(nameof(Ingredients), new { id }, new { id, dto.Name, dto.Quantity, dto.Measurement, dto.RecipeId });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Error = ex.GetType().ToString(), Message = ex.Message });
+            }
         }
 
         [HttpPut("{id}/[Action]/{ingredientId}")]
         [ProducesResponseType((int)HttpStatusCode.Accepted)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> Ingredients(int id, int ingredientId, [FromBody]IngredientCreateDto dto)
+        public async Task<IActionResult> Ingredients(int id, int ingredientId, [FromBody] IngredientCreateDto dto)
         {
-            var ingredient = _ingredientService.GetById(ingredientId);
-            if(ingredient is null) 
+            var ingredient = await _ingredientService.GetById(ingredientId);
+            if (ingredient is null)
             {
                 return NotFound(ingredient);
             }
@@ -71,7 +79,7 @@ namespace PadariaTech.Application.Controllers
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> Delete(int id, int ingredientId)
         {
-            var ingredient = _ingredientService.GetById(ingredientId);
+            var ingredient = await _ingredientService.GetById(ingredientId);
 
             if (ingredient is null)
             {

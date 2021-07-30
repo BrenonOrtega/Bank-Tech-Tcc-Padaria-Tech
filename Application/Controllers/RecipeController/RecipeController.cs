@@ -40,9 +40,9 @@ namespace PadariaTech.Application.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var recipe = _recipeService.GetById(id);
+            var recipe = await _recipeService.GetById(id);
 
             if (recipe.Id.Equals(0))
             {

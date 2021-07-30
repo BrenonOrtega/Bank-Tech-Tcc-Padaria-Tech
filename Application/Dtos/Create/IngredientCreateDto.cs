@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 
 namespace PadariaTech.Application.Dtos.Create
 {
@@ -16,7 +17,7 @@ namespace PadariaTech.Application.Dtos.Create
         [Required]
         public int ProductId { get; set; }
 
-        [Required]
+        [IgnoreDataMember]
         public int RecipeId { get; set; }
     }
 

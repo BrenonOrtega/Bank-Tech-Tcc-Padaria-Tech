@@ -20,7 +20,7 @@ namespace PadariaTech.Application.Services
         {
         }
 
-        protected override Recipe GetCreatedModel(RecipeCreateDto dto)
+        protected override async Task<Recipe> GetCreatedModel(RecipeCreateDto dto)
         {
             var recipeModel = _mapper.Map<Recipe>(dto);
             var exists = _repository.Get(x => x.Name == recipeModel.Name && x.Portion == recipeModel.Portion).Any();
@@ -33,7 +33,7 @@ namespace PadariaTech.Application.Services
             return recipeModel;
         }
 
-        protected override Recipe GetUpdatedModel(int id, RecipeCreateDto dto)
+        protected override async Task<Recipe> GetUpdatedModel(int id, RecipeCreateDto dto)
         {
             var updatedRecipe = _mapper.Map<Recipe>(dto);
             var recipeExists = _repository.Get(recipe => recipe.Id.Equals(id)).Any();

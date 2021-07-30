@@ -20,13 +20,13 @@ namespace PadariaTech.Application.Services
             _mapper = mapper;
         }
 
-        protected abstract TModel GetCreatedModel(TCreate dto);
+        protected abstract Task<TModel> GetCreatedModel(TCreate dto);
 
-        protected abstract TModel GetUpdatedModel(int id, TCreate dto);
+        protected abstract Task<TModel> GetUpdatedModel(int id, TCreate dto);
 
         public virtual async Task<int> Register(TCreate dto)
         {
-            var model = GetCreatedModel(dto);
+            var model = await GetCreatedModel(dto);
 
             if (model is not null)
             {
@@ -38,11 +38,11 @@ namespace PadariaTech.Application.Services
 
         public async Task Update(int id, TCreate dto)
         {
-            var model = GetUpdatedModel(id, dto);
-
+            var updatedModel = await GetUpdatedModel(id, dto);
+            var model = await _repository.GetById(id);
             if (model is not null)
             {
-                _repository.Update(id, model);
+                _repository.Update(id, model, updatedModel);
             }
             await CommitChangesAsync();
         }
@@ -58,9 +58,9 @@ namespace PadariaTech.Application.Services
             return model;
         }
 
-        public virtual TRead GetById(int id)
+        public async virtual Task<TRead> GetById(int id)
         {
-            var model = _repository.GetById(id);
+            var model = await _repository.GetById(id);
 
             if (model is null)
             {
@@ -73,15 +73,15 @@ namespace PadariaTech.Application.Services
 
         public void Delete(int id)
         {
-            var model = _repository.GetById(id);
+            var exists = _repository.Get(x => x.Id == id).Any();
 
-            if (model is not null)
+            if (exists)
             {
-                _repository.Delete(model);
+                _repository.Delete(id);
             }
         }
 
-        public Task<int> CommitChangesAsync() =>
-            _repository.SaveChanges();
+        public async Task<int> CommitChangesAsync() =>
+            await _repository.SaveChangesAsync();
     }
 }

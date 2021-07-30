@@ -26,9 +26,9 @@ namespace PadariaTech.Data.Repository
             return query;
         }
 
-        public virtual T GetById(int id)
+        public virtual Task<T> GetById(int id)
         {
-           return Get(x => x.Id == id).OfType<T>().FirstOrDefault();
+           return Get(x => x.Id == id).OfType<T>().FirstOrDefaultAsync();
         }
 
         public void Add(T entity)
@@ -36,24 +36,24 @@ namespace PadariaTech.Data.Repository
             _dbSet.Add(entity);
         }
 
-        public void Delete(T entity)
+        public void Delete(int id)
         {
-            _dbSet.Remove(entity);
+            _dbSet.Remove(_dbSet.Find(id));
         }
 
 
-        public Task<int> SaveChanges()
+        public async Task<int> SaveChangesAsync()
         {
-            return _context.SaveChangesAsync();
+            return await _context.SaveChangesAsync();
         }
 
-        public void Update(int id, T entity)
+        public async void Update<V>(int id, T entity, V updatedData)
         {
-            var result = _dbSet.FirstOrDefault(e => e.Id.Equals(id));
+            var result = await _dbSet.FirstOrDefaultAsync(e => e.Id.Equals(id));
 
             if (result is not null)
             {
-                _context.Entry(result).CurrentValues.SetValues(entity);
+                _context.Entry(result).CurrentValues.SetValues(updatedData);
             }
         }
 

@@ -22,7 +22,7 @@ namespace PadariaTech.Application.Services
             _recipeRepo = recipeRepo;
         }
 
-        protected override BakedProduct GetCreatedModel(BakedProductCreateDto dto)
+        protected override async Task<BakedProduct> GetCreatedModel(BakedProductCreateDto dto)
         {
             var newBakedProduct = _mapper.Map<BakedProduct>(dto);
             var recipe = _recipeRepo
@@ -38,12 +38,12 @@ namespace PadariaTech.Application.Services
             throw new ArgumentException("Another instance of BakedProduct already has this recipeId or does not exist.");
         }
 
-        protected override BakedProduct GetUpdatedModel(int id, BakedProductCreateDto dto)
+        protected override async Task<BakedProduct> GetUpdatedModel(int id, BakedProductCreateDto dto)
         {
             var updatedBakedProduct = _mapper.Map<BakedProduct>(dto);
             updatedBakedProduct.Id = id;
 
-            var originalBakedProduct = _repository.GetById(id);
+            var originalBakedProduct = await _repository.GetById(id);
             var recipeAlreadyAssigned = _recipeRepo
                 .Get(recipe => recipe.Id == updatedBakedProduct.RecipeId && recipe.BakedProduct.Id != id)
                 .Any();
@@ -60,8 +60,5 @@ namespace PadariaTech.Application.Services
 
             return updatedBakedProduct;
         }
-
-        private Recipe GetRecipeById(int id) =>
-            _recipeRepo.GetById(id) ?? throw new ArgumentException("Recipe does not exist");
     }
 }
