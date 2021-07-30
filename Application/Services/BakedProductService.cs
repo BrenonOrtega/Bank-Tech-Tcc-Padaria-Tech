@@ -25,46 +25,43 @@ namespace PadariaTech.Application.Services
         protected override BakedProduct GetCreatedModel(BakedProductCreateDto dto)
         {
             var newBakedProduct = _mapper.Map<BakedProduct>(dto);
+            var recipe = _recipeRepo
+                .Get(recipe => recipe.Id == newBakedProduct.RecipeId && recipe.BakedProduct.Equals(null))
+                .SingleOrDefault();
 
-            if(_recipeRepo.Get(x => true).Any(x => x.Id == newBakedProduct.RecipeId))
-             throw new System.ArgumentException("Another instance of BakedProduct already has this recipeId");
+            if (recipe is not null)
+            {
+                newBakedProduct.Recipe = recipe;
+                return newBakedProduct;
+            }
 
-            return newBakedProduct;
+            throw new ArgumentException("Another instance of BakedProduct already has this recipeId or does not exist.");
         }
 
         protected override BakedProduct GetUpdatedModel(int id, BakedProductCreateDto dto)
         {
             var updatedBakedProduct = _mapper.Map<BakedProduct>(dto);
             updatedBakedProduct.Id = id;
+
             var originalBakedProduct = _repository.GetById(id);
+            var recipeAlreadyAssigned = _recipeRepo
+                .Get(recipe => recipe.Id == updatedBakedProduct.RecipeId && recipe.BakedProduct.Id != id)
+                .Any();
 
             if (originalBakedProduct is null)
             {
                 throw new KeyNotFoundException("This Baked Product does not exists");
             }
-            if(_recipeRepo.Get(x => true).Any(x => x.Id == updatedBakedProduct.RecipeId && x.BakedProduct.Id != id))
+
+            if (recipeAlreadyAssigned)
             {
                 throw new ArgumentException("Another instance of BakedProduct already has this recipeId");
             }
-            
+
             return updatedBakedProduct;
-
         }
 
-        public override BakedProductReadDto GetById(int id)
-        {
-            var mappedModel = base.GetById(id);
-           
-            var recipe = _recipeRepo.Get(recipe => recipe.BakedProduct.Id == id).FirstOrDefault();
-            mappedModel.Recipe = _mapper.Map<BakedProductRecipeReadDto>(recipe);
-            
-            return mappedModel;
-        }
-    
         private Recipe GetRecipeById(int id) =>
             _recipeRepo.GetById(id) ?? throw new ArgumentException("Recipe does not exist");
-
-
-        
     }
 }

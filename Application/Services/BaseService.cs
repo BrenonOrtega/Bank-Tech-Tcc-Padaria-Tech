@@ -7,11 +7,11 @@ using PadariaTech.Domain.Models;
 
 namespace PadariaTech.Application.Services
 {
-    public abstract class BaseService<TModel, TRead, TCreate> 
-        where TModel : EntityBase 
+    public abstract class BaseService<TModel, TRead, TCreate>
+        where TModel : EntityBase
         where TRead : new()
     {
-        protected readonly IGenericRepository<TModel> _repository; 
+        protected readonly IGenericRepository<TModel> _repository;
         protected readonly IMapper _mapper;
 
         public BaseService(IGenericRepository<TModel> repository, IMapper mapper)
@@ -81,7 +81,7 @@ namespace PadariaTech.Application.Services
             }
         }
 
-        public Task<int> CommitChangesAsync() =>  
+        public Task<int> CommitChangesAsync() =>
             _repository.SaveChanges();
     }
 }
