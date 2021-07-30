@@ -4,7 +4,6 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PadariaTech.Application.Dtos.Create;
-using PadariaTech.Domain.Models;
 using PadariaTech.Application.Services;
 
 namespace PadariaTech.Application.Controllers
@@ -14,7 +13,7 @@ namespace PadariaTech.Application.Controllers
 
     public partial class RecipeController : ControllerBase
     {
-        private readonly RecipeService _recipeService;        
+        private readonly RecipeService _recipeService;
         private readonly IngredientService _ingredientService;
 
         public RecipeController(RecipeService recipeService, IngredientService ingredientService)
@@ -26,29 +25,45 @@ namespace PadariaTech.Application.Controllers
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
-         public async Task<IActionResult> Get()
+        public IActionResult Get()
         {
             var recipes = _recipeService.GetAll();
-            
-            if(recipes.Any())
+
+            if (recipes.Any())
+            {
                 return Ok(recipes);
-            
+            }
+
             return NoContent();
-        }   
+        }
+
+        [HttpGet("{id}")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public IActionResult Get(int id)
+        {
+            var recipe = _recipeService.GetById(id);
+
+            if (recipe.Id.Equals(0))
+            {
+                return NoContent();
+            }
+
+            return Ok(recipe);
+        }
 
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.Created)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Post([FromBody]RecipeCreateDto recipe)
+        public async Task<IActionResult> Post([FromBody] RecipeCreateDto recipe)
         {
             try
             {
-            var id = await _recipeService.Register(recipe);
-            return CreatedAtAction(nameof(Post), new { recipe.Name }, recipe);
+                var id = await _recipeService.Register(recipe);
+                return CreatedAtAction(nameof(Get), new { id }, new { id, recipe.Name });
             }
             catch (Exception e)
             {
-                
                 return BadRequest(new { ErrorMessage = e.Message });
             }
         }
@@ -63,7 +78,6 @@ namespace PadariaTech.Application.Controllers
             }
             catch (Exception e)
             {
-                
                 return BadRequest(new { ErrorMessage = e.Message });
             }
         }
