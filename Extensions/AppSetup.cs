@@ -12,7 +12,10 @@ namespace PadariaTech.Extensions
     {
         public static IServiceCollection AddDatabase(this IServiceCollection services, string connectionString)
         {
-            services.AddDbContext<BakeryContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<BakeryContext>(options => {
+                options.UseSqlServer(connectionString);
+            },
+             ServiceLifetime.Transient);
 
             return services;
         }
