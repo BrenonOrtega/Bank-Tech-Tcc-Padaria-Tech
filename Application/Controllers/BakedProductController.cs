@@ -1,5 +1,6 @@
 using System;
 using System.Net;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PadariaTech.Application.Dtos.Create;
@@ -72,6 +73,27 @@ namespace PadariaTech.Application.Controllers
             catch (Exception e)
             {
                 return BadRequest(new { ErrorMessage = e.Message });
+            }
+        }
+
+        [HttpPatch("{id}/Bake")]
+        [ProducesResponseType((int)HttpStatusCode.Accepted)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> PatchQuantity(int id)
+        {
+            try
+            {
+                await _service.BakeProduct(id);
+                return Accepted();
+            }
+            catch(KeyNotFoundException knfex)
+            {
+                return NotFound(new {ErrorMessage = knfex.Message });
+            }
+            catch(Exception ex)
+            {
+                return Problem(ex.Message);
             }
         }
     }
