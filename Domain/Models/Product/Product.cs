@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using PadariaTech.Domain.Enum;
 using PadariaTech.Domain.Models;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System.Collections.Generic;
 
 namespace PadariaTech.Domain.Models
 {
@@ -19,7 +20,7 @@ namespace PadariaTech.Domain.Models
 
         public ProductTypes Type { get; set; }
 
-        public Ingredient Ingredient { get; set; }
+        public List<Ingredient> Ingredients { get; set; }
 
         public void AddQuantity(double quantity)
         {

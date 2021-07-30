@@ -1,4 +1,5 @@
 using System.Linq;
+using System;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -40,8 +41,31 @@ namespace PadariaTech.Application.Controllers
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> Post([FromBody]RecipeCreateDto recipe)
         {
+            try
+            {
             var id = await _recipeService.Register(recipe);
             return CreatedAtAction(nameof(Post), new { recipe.Name }, recipe);
+            }
+            catch (Exception e)
+            {
+                
+                return BadRequest(new { ErrorMessage = e.Message });
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, [FromBody] RecipeCreateDto dto)
+        {
+            try
+            {
+                await _recipeService.Update(id, dto);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                
+                return BadRequest(new { ErrorMessage = e.Message });
+            }
         }
     }
 }
