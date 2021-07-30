@@ -20,8 +20,6 @@ namespace PadariaTech.Domain.Models
 
         public ProductTypes Type { get; set; }
 
-        public List<Ingredient> Ingredients { get; set; }
-
         public void AddQuantity(double quantity)
         {
             if (ValidQuantity(quantity))

@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using PadariaTech.Domain.Models;
@@ -19,5 +20,10 @@ namespace PadariaTech.Domain.Models
 
         public int RecipeId;
         public Recipe Recipe{ get; set; }
+
+        internal void UseQuantity()
+        {
+            Product.RemoveQuantity(Quantity);
+        }
     }
 }
