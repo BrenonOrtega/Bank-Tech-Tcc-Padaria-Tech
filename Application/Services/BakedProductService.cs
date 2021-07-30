@@ -27,7 +27,7 @@ namespace PadariaTech.Application.Services
             var newBakedProduct = _mapper.Map<BakedProduct>(dto);
 
             if(_recipeRepo.Get(x => true).Any(x => x.Id == newBakedProduct.RecipeId))
-             throw new System.ArgumentException("RecipeId must be unique");
+             throw new System.ArgumentException("Another instance of BakedProduct already has this recipeId");
 
             return newBakedProduct;
         }
@@ -44,7 +44,7 @@ namespace PadariaTech.Application.Services
             }
             if(_recipeRepo.Get(x => true).Any(x => x.Id == updatedBakedProduct.RecipeId && x.BakedProduct.Id != id))
             {
-                throw new ArgumentException("recipeId must be unique");
+                throw new ArgumentException("Another instance of BakedProduct already has this recipeId");
             }
             
             return updatedBakedProduct;

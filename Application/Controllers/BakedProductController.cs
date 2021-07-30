@@ -64,8 +64,16 @@ namespace PadariaTech.Application.Controllers
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> Put(int id, [FromBody] BakedProductCreateDto dto)
         {
+            try
+            {
             await _service.Update(id, dto);
-            return Ok();
+            return Ok();               
+            }
+            catch (Exception e)
+            {
+                
+                return BadRequest(new { ErrorMessage = e.Message });
+            }
         }
     }
 }
