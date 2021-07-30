@@ -13,10 +13,5 @@ namespace PadariaTech.Data.Repository
         public ProductRepository(BakeryContext context) : base(context)
         {
         }
-        public override IQueryable<Product> Get(Expression<Func<Product, bool>> expression)
-        {
-            return base.Get(expression).Include(x => x.Ingredients);
-        }
-
     }
 }

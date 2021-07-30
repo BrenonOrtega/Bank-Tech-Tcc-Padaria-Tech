@@ -14,7 +14,10 @@ namespace PadariaTech.Data.Repository
         }
         public override IQueryable<BakedProduct> Get(Expression<Func<BakedProduct, bool>> expression)
         {
-            return base.Get(expression).Include(x => x.Recipe);
+            return base.Get(expression)
+                .Include(x => x.Recipe)
+                .ThenInclude(r => r.Ingredients)
+                .ThenInclude(i => i.Product);
         }
     }
 }
