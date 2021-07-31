@@ -23,7 +23,8 @@ namespace PadariaTech.Data
 
             builder.Entity<Ingredient>()
                 .HasOne<Product>(i => i.Product)
-                ;
+                .WithMany()
+                .HasForeignKey(i => i.ProductId);
             
             builder.Entity<Ingredient>()
                 .HasOne(i => i.Recipe)
@@ -36,14 +37,16 @@ namespace PadariaTech.Data
                 .HasMany(r => r.Ingredients)
                 .WithOne(i => i.Recipe)
                 .HasForeignKey(i => i.RecipeId);
+
+            builder.Entity<SoldItem>()
+                .HasOne(si => si.Product)
+                .WithOne()
+                .HasForeignKey<SoldItem>(si => si.ProductId);
+
+            builder.Entity<SoldItem>()
+                .HasOne(si => si.Sell) 
+                .WithMany(s => s.SoldItems)
+                .HasForeignKey(si => si.SellId);
         }
-
-        DbSet<Ingredient> Ingredients { get; set; }
-
-        DbSet<Product> Products { get; set; }
-
-        DbSet<Recipe> Recipes { get; set; }
-
-        DbSet<BakedProduct> BakedProducts { get; set; }
     }
 }

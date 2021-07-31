@@ -10,6 +10,9 @@ namespace PadariaTech.Domain.Models
 {
     public partial class Product : EntityBase
     {
+        [MaxLength(150)]
+        public string Name { get; set; }
+
         [DataType(DataType.Currency)]
         public decimal Price { get; set; }
 

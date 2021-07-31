@@ -79,7 +79,7 @@ namespace PadariaTech.Application.Services
 
         private void ThrowIfDuplicated(Product product, Recipe recipe, IngredientCreateDto dto)
         {
-            var duplicatedRecipe = recipe?.Ingredients.Any(i => i.Name == dto.Name && i.Quantity == dto.Quantity && i.ProductId == dto.ProductId);
+            var duplicatedRecipe = recipe?.Ingredients.Any(i => i.Quantity == dto.Quantity && i.ProductId == dto.ProductId);
 
             if((duplicatedRecipe) ?? false)
                 throw new InvalidOperationException("There's a similar ingredient already assigned to recipe or product");

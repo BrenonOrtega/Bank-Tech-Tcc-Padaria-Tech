@@ -1,0 +1,12 @@
+﻿using PadariaTech.Domain.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace PadariaTech.Domain.Models
+{
+    public interface ISoldRepository : IGenericRepository<SoldItem>
+    {
+    }
+}

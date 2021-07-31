@@ -5,9 +5,6 @@ namespace PadariaTech.Application.Dtos.Create
 {
     public class IngredientCreateDto
     {
-        [Required]
-        public string Name { get; set; }
-
         [Required, Range(0, double.PositiveInfinity)]
         public double Quantity { get; set; }
 

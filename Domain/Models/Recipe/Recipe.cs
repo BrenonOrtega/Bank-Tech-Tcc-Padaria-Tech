@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using PadariaTech.Domain.Models;
@@ -7,6 +8,9 @@ namespace PadariaTech.Domain.Models
 {
     public class Recipe : EntityBase
     {
+        [MaxLength(150)]
+        public string Name { get; set; }
+
         public double Portion { get; set; }
 
         public ICollection<Ingredient> Ingredients { get; set; }

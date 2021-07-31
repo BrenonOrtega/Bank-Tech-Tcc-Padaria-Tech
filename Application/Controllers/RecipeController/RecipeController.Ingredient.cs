@@ -49,7 +49,7 @@ namespace PadariaTech.Application.Controllers
             {
                 dto.RecipeId = id;
                 var ingredientId = await _ingredientService.Register(dto);
-                return CreatedAtAction(nameof(Ingredients), new { id, ingredientId }, new { id = ingredientId, dto.Name, dto.Quantity, dto.Measurement });
+                return CreatedAtAction(nameof(Ingredients), new { id, ingredientId }, new { id = ingredientId, dto.Quantity, dto.Measurement });
 
             }
             catch (Exception ex)

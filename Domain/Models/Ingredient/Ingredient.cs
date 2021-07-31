@@ -18,6 +18,7 @@ namespace PadariaTech.Domain.Models
         [ForeignKey(nameof(ProductId))]
         public Product Product { get; set;}
 
+
         public int RecipeId;
         public Recipe Recipe{ get; set; }
 

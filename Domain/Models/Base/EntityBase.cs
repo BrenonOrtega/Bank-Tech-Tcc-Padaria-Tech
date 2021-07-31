@@ -6,8 +6,6 @@ namespace PadariaTech.Domain.Models
     public interface IEntityBase<TKey>
     {
         TKey Id { get; set; }
-
-        string Name { get; set; }
     }
 
     public abstract class EntityBase : IEntityBase<int>
@@ -15,8 +13,5 @@ namespace PadariaTech.Domain.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public virtual int Id { get; set; }
-
-        [MaxLength(150)]
-        public string Name { get ; set; }
     }
 }
