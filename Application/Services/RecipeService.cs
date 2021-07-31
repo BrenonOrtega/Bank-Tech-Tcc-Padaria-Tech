@@ -36,8 +36,16 @@ namespace PadariaTech.Application.Services
         protected override async Task<Recipe> GetUpdatedModel(int id, RecipeCreateDto dto)
         {
             var updatedRecipe = _mapper.Map<Recipe>(dto);
+
+            var exists = _repository.Get(x => x.Name == dto.Name && x.Portion == dto.Portion).Any();
+
             var recipeExists = _repository.Get(recipe => recipe.Id.Equals(id)).Any();
             updatedRecipe.Id = id;
+
+            if(exists)
+            {
+                throw new Exception("A similar recipe already exists.");
+            }
 
             if (!recipeExists) 
             {

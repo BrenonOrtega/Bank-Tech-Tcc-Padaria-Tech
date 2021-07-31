@@ -43,16 +43,23 @@ namespace PadariaTech.Application.Services
         protected override async Task<BakedProduct> GetCreatedModel(BakedProductCreateDto dto)
         {
             var newBakedProduct = _mapper.Map<BakedProduct>(dto);
+            var exists = _repository
+                .Get(prod => prod.Name == dto.Name && prod.Measure == dto.Measure && prod.Type == newBakedProduct.Type)
+                .Any();
             var recipe = _recipeRepo
                 .Get(recipe => recipe.Id == newBakedProduct.RecipeId && recipe.BakedProduct.Equals(null))
                 .SingleOrDefault();
 
-            if (recipe is not null)
+            if (recipe is null)
             {
-                return newBakedProduct;
+            throw new ArgumentException("Another instance of BakedProduct already has this recipeId or does not exist.");
+            }
+            if(exists)
+            {
+                throw new ArgumentException("This BakedProduct already exists");
             }
 
-            throw new ArgumentException("Another instance of BakedProduct already has this recipeId or does not exist.");
+            return newBakedProduct;
         }
 
         protected override async Task<BakedProduct> GetUpdatedModel(int id, BakedProductCreateDto dto)
@@ -60,10 +67,19 @@ namespace PadariaTech.Application.Services
             var updatedBakedProduct = _mapper.Map<BakedProduct>(dto);
             updatedBakedProduct.Id = id;
 
+            var exists = _repository
+                .Get(prod => prod.Name == dto.Name && prod.Measure == dto.Measure && prod.Type == updatedBakedProduct.Type)
+                .Any();
+
             var originalBakedProduct = await _repository.GetById(id);
             var recipeAlreadyAssigned = _recipeRepo
                 .Get(recipe => recipe.Id == updatedBakedProduct.RecipeId && recipe.BakedProduct.Id != id)
                 .Any();
+
+            if(exists)
+            {
+                throw new ArgumentException("This Baked Product already exists");
+            }
 
             if (originalBakedProduct is null)
             {
