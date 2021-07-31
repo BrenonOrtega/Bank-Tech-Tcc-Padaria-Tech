@@ -13,7 +13,7 @@ services:
         environment: 
             ACCEPT_EULA: Y
             SA_PASSWORD: Techbank123@
-            MSSQL_DB: dev_db
+            MSSQL_DB: PadariaTech
             MSSQL_USER: admin
             MSSQL_PASSWORD: "@dminPassword123"
         networks: 
