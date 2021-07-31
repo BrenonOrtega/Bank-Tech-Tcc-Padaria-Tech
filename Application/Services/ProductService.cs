@@ -35,9 +35,18 @@ namespace PadariaTech.Application.Services
         {
             var updatedProduct = _mapper.Map<Product>(dto);
             updatedProduct.Id = id;
+            
+            var exists = _repository
+                .Get(prod => prod.Name == dto.Name && prod.Measure == dto.Measure && prod.Type == updatedProduct.Type)
+                .Any();
 
             var originalProduct = await _repository.GetById(id);
 
+            if(exists)
+            {
+                throw new ArgumentException("This Product already exists");
+
+            }
             if (originalProduct is null)
             {
                 throw new KeyNotFoundException($"Product with Id {id} does not exist.");
@@ -50,18 +59,22 @@ namespace PadariaTech.Application.Services
         {
             var product = await _repository.GetById(id);
 
-            if (product is not null && product.Type != ProductTypes.RawMaterial)
+            if(product is null)
             {
-                var mappedProduct = _mapper.Map<ProductReadDto>(product);
-                var unitaryValue = product.GetSellValue(quantity);
-                product.RemoveQuantity(quantity);
-                
-                await CommitChangesAsync();
-
-                return (unitaryValue, mappedProduct);
+                throw new ArgumentException($"Product with Id { id } does not exist.");
+            }
+            if(product.Type == ProductTypes.RawMaterial)
+            {
+                throw new ArgumentException($"Cannot sell an ingredient product.");
             }
 
-            throw new ArgumentException($"Product with Id { id } does not exist.");
+            var mappedProduct = _mapper.Map<ProductReadDto>(product);
+            var unitaryValue = product.GetSellValue(quantity);
+            product.RemoveQuantity(quantity);
+                
+            await CommitChangesAsync();
+
+            return (unitaryValue, mappedProduct);
         }
     }
 }

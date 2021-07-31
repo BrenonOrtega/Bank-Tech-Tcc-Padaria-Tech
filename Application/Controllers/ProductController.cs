@@ -84,24 +84,6 @@ namespace PadariaTech.Application.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        [ProducesResponseType((int)HttpStatusCode.NoContent)]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var product = await _service.GetById(id);
-
-            if (product is null)
-            {
-                return NotFound(product);
-            }
-
-            _service.Delete(id);
-            await _service.CommitChangesAsync();
-
-            return NoContent();
-        }
-
         [HttpPatch("{id}/[Action]")]
         [ProducesResponseType((int)HttpStatusCode.Accepted)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
