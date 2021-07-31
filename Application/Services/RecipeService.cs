@@ -30,7 +30,7 @@ namespace PadariaTech.Application.Services
                 throw new Exception("A similar recipe already exists.");
             }
 
-            return recipeModel;
+            return await Task.FromResult(recipeModel);
         }
 
         protected override async Task<Recipe> GetUpdatedModel(int id, RecipeCreateDto dto)

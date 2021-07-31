@@ -21,7 +21,7 @@ namespace PadariaTech.Application.Controllers
 
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        public async Task<IActionResult> Get()
+        public IActionResult Get()
         {
             var mappedBakedProducts = _service.GetAll();
 

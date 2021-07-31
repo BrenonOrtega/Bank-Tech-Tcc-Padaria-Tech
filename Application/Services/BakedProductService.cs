@@ -59,7 +59,7 @@ namespace PadariaTech.Application.Services
                 throw new ArgumentException("This BakedProduct already exists");
             }
 
-            return newBakedProduct;
+            return await Task.FromResult(newBakedProduct);
         }
 
         protected override async Task<BakedProduct> GetUpdatedModel(int id, BakedProductCreateDto dto)
