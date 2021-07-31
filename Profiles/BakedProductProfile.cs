@@ -15,7 +15,7 @@ namespace PadariaTech.Profiles
 
             CreateMap<BakedProductCreateDto, BakedProduct>()
                 .ForMember(model => model.Recipe, options => options.Ignore())
-                .ForMember(model => model.Type, options => options.MapFrom(dto => dto.ProductType));
+                .ForMember(model => model.Type, options => options.MapFrom(dto => dto.Type));
 
             CreateMap<BakedProduct, BakedProductReadDto>()
                ;

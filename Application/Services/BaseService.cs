@@ -40,6 +40,7 @@ namespace PadariaTech.Application.Services
         {
             var updatedModel = await GetUpdatedModel(id, dto);
             var model = await _repository.GetById(id);
+            
             if (model is not null)
             {
                 _repository.Update(id, model, updatedModel);

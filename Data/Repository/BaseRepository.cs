@@ -47,13 +47,11 @@ namespace PadariaTech.Data.Repository
             return await _context.SaveChangesAsync();
         }
 
-        public async void Update<V>(int id, T entity, V updatedData)
+        public void Update<V>(int id, T entity, V updatedData)
         {
-            var result = await _dbSet.FirstOrDefaultAsync(e => e.Id.Equals(id));
-
-            if (result is not null)
+            if (entity is not null)
             {
-                _context.Entry(result).CurrentValues.SetValues(updatedData);
+                _context.Entry(entity).CurrentValues.SetValues(updatedData);
             }
         }
 

@@ -14,8 +14,7 @@ namespace PadariaTech.Extensions
         {
             services.AddDbContext<BakeryContext>(options => {
                 options.UseSqlServer(connectionString);
-            },
-             ServiceLifetime.Transient);
+            });
 
             return services;
         }
