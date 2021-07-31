@@ -44,7 +44,7 @@ namespace PadariaTech.Application.Services
                 throw new KeyNotFoundException("the recipe to be updated does not exists");
             }
             
-            return updatedRecipe;
+            return await Task.FromResult(updatedRecipe);
         }
     }
 }

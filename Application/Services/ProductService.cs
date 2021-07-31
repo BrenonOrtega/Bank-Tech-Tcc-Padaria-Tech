@@ -16,7 +16,7 @@ namespace PadariaTech.Application.Services
         {
         }
 
-        protected override async Task<Product> GetCreatedModel(ProductCreateDto dto)
+        protected override Task<Product> GetCreatedModel(ProductCreateDto dto)
         {
             var product = _mapper.Map<Product>(dto);
 
@@ -27,7 +27,7 @@ namespace PadariaTech.Application.Services
             if (exists)
                 throw new ArgumentException("Similar product already exists");
 
-            return product;
+            return Task.FromResult(product);
         }
 
         protected override async Task<Product> GetUpdatedModel(int id, ProductCreateDto dto)
