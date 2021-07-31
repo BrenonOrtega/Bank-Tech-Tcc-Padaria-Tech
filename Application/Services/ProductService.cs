@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using System;
 using System.Collections.Generic;
+using PadariaTech.Domain.Enum;
 
 namespace PadariaTech.Application.Services
 {
@@ -39,10 +40,28 @@ namespace PadariaTech.Application.Services
 
             if (originalProduct is null)
             {
-                throw new KeyNotFoundException("This Product does not exists");
+                throw new KeyNotFoundException($"Product with Id {id} does not exist.");
             }
 
             return updatedProduct;
+        }
+
+        public async Task<(decimal UnitaryValue, ProductReadDto SoldProduct)> SellProduct(int id, double quantity)
+        {
+            var product = await _repository.GetById(id);
+
+            if (product is not null && product.Type != ProductTypes.RawMaterial)
+            {
+                var mappedProduct = _mapper.Map<ProductReadDto>(product);
+                var unitaryValue = product.GetSellValue(quantity);
+                product.RemoveQuantity(quantity);
+                
+                await CommitChangesAsync();
+
+                return (unitaryValue, mappedProduct);
+            }
+
+            throw new ArgumentException($"Product with Id { id } does not exist.");
         }
     }
 }

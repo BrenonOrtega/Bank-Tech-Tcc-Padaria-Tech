@@ -30,9 +30,13 @@ namespace PadariaTech.Domain.Models
 
         public void RemoveQuantity(double quantity)
         {
-            if (ValidQuantity(quantity) && quantity <= StockQuantity)
+            if (IsDecreasePossible(quantity))
             {
                 StockQuantity -= quantity;
+            }
+            else 
+            {
+                throw new InvalidOperationException("Stock does not have these much products.");
             }
         }
 
@@ -46,6 +50,12 @@ namespace PadariaTech.Domain.Models
             }
             return true;
         }
+
+        private bool IsDecreasePossible(double quantity) => 
+            ValidQuantity(quantity) && quantity <= StockQuantity;
+
+        public decimal GetSellValue(double quantity) => 
+            Price * Convert.ToDecimal(quantity);
 
         public override string ToString() =>
             $"Product { Id } - { Name } - { Price } - { StockQuantity } { Measure }";

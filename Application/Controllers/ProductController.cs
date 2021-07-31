@@ -24,32 +24,14 @@ namespace PadariaTech.Application.Controllers
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public IActionResult Get()
         {
-            var bakedProducts = _service.GetAll();
+            var products = _service.GetAll();
 
-            if (bakedProducts.Any())
+            if (products.Any())
             {
-                return Ok(bakedProducts);
+                return Ok(products);
             }
 
             return NoContent();
-        }
-
-        [HttpPost]
-        [ProducesResponseType((int)HttpStatusCode.Created)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Post([FromBody] ProductCreateDto dto)
-        {
-            try
-            {
-                var id = await _service.Register(dto);
-                await _service.CommitChangesAsync();
-                return CreatedAtAction(nameof(Post), new { id }, new { id, dto.Name, dto.Price, dto.Type });
-
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { Message = ex.Message });
-            }
         }
 
         [HttpGet("{id}")]
@@ -67,6 +49,25 @@ namespace PadariaTech.Application.Controllers
             return Ok(product);
         }
 
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> Post([FromBody] ProductCreateDto dto)
+        {
+            try
+            {
+                var id = await _service.Register(dto);
+                await _service.CommitChangesAsync();
+                return CreatedAtAction(nameof(Get), new { id }, new { id, dto.Name, dto.Price, dto.Type });
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+
+
         [HttpPut("{id}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
@@ -83,7 +84,7 @@ namespace PadariaTech.Application.Controllers
             }
         }
 
-        [HttpDelete("/delete/{id}")]
+        [HttpDelete("{id}")]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> Delete(int id)
@@ -99,6 +100,30 @@ namespace PadariaTech.Application.Controllers
             await _service.CommitChangesAsync();
 
             return NoContent();
+        }
+
+        [HttpPatch("{id}/[Action]")]
+        [ProducesResponseType((int)HttpStatusCode.Accepted)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> Sell(int id, [FromBody] ProductSellOrderCreateDto sellOrder)
+        {
+            try
+            {
+                var product = await _service.GetById(id);
+
+                if (product is not null)
+                {
+                    var (sellValue, dto) = await _service.SellProduct(id, sellOrder.Quantity);
+
+                    return Accepted(new { sellValue, sellOrder.Quantity, productId = dto.Id, productName = dto.Name, dto.Price });
+                }
+
+                return NotFound(new {Message = $"Id {id} Not Found"});
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { ErrorMessage = ex.Message });
+            }
         }
     }
 }
