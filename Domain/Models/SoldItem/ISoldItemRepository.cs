@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PadariaTech.Domain.Models
 {
-    public interface ISoldRepository : IGenericRepository<SoldItem>
+    public interface ISoldItemRepository : IGenericRepository<SoldItem>
     {
     }
 }

@@ -26,6 +26,9 @@ namespace PadariaTech.Extensions
             services.AddScoped<IRecipeRepository, RecipeRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IIngredientRepository, IngredientRepository>();
+            services.AddScoped<ISellRepository, SellRepository>();
+            services.AddScoped<ISoldItemRepository, SoldItemRepository>();
+
 
             return services;
         }
@@ -33,9 +36,11 @@ namespace PadariaTech.Extensions
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
             services.AddScoped<RecipeService>();
-            services.AddTransient<ProductService>();
-            services.AddTransient<BakedProductService>();
-            services.AddTransient<IngredientService>();
+            services.AddScoped<ProductService>();
+            services.AddScoped<BakedProductService>();
+            services.AddScoped<IngredientService>();
+            services.AddScoped<SellService>();
+            services.AddScoped<SoldItemService>();
             
             return services;
         }

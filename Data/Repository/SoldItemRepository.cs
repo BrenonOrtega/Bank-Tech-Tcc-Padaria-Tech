@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PadariaTech.Data.Repository
 {
-    public class SoldItemRepository : BaseRepository<SoldItem>
+    public class SoldItemRepository : BaseRepository<SoldItem>, ISoldItemRepository
     {
         public SoldItemRepository(BakeryContext context) : base(context)
         {
