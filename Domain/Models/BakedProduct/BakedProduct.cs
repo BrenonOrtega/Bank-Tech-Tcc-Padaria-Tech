@@ -20,14 +20,9 @@ namespace PadariaTech.Domain.Models
             }
             else 
             {
-                throw InvalidOperationException("One or more ingredients have not enough stock");
+                throw new InvalidOperationException("One or more ingredients have not enough stock");
             }
 
-        }
-
-        private Exception InvalidOperationException(string v)
-        {
-            throw new NotImplementedException();
         }
     }
 }
